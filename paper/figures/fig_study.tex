@@ -1,0 +1,39 @@
+% Study structure. Colour = status of each block.
+\begin{tikzpicture}[font=\scriptsize,>={Latex[length=1.6mm]},line width=0.45pt,
+  box/.style={draw,rounded corners=1.2pt,align=center,text width=29mm,minimum height=11mm,inner sep=1.5pt,fill=white},
+  assumed/.style={box,fill=amberfill},
+  new/.style={box,fill=greenfill},
+  lab/.style={font=\scriptsize\bfseries,inner sep=0pt},
+  note/.style={font=\tiny,inner sep=0.8pt,fill=white}]
+\def\xa{1.6}\def\xb{5.0}\def\xc{8.4}\def\xd{11.8}\def\xe{15.2}
+% Lanes
+\fill[black!4,draw=black!40,rounded corners=2pt] (-0.05,2.25) rectangle (16.85,4.05);
+\fill[black!4,draw=black!40,rounded corners=2pt] (-0.05,-0.95) rectangle (16.85,1.0);
+\node[lab,anchor=north west] at (0.08,3.97) {Dynamic simulation (MuJoCo): measured in simulation};
+\node[lab,anchor=south west] at (0.08,-0.88) {Algorithmic Monte Carlo: no dynamics, no rendering};
+% Dynamic simulation
+\node[assumed] (terrain) at (\xa,2.9) {Terrain parameters\\friction, relief, contact\\(assumed ranges)};
+\node[box]     (robot)   at (\xb,2.9) {Robot models, controllers\\legged: maker's policy\\wheeled: project's own};
+\node[new]     (signals) at (\xc,2.9) {Proprioception\\IMU, joint position,\\velocity, command torque};
+\node[new]     (clf)     at (\xd,2.9) {Terrain classifier\\window features,\\random forest};
+\node[new]     (conf)    at (\xe,2.9) {Held-out confusion\\$\hat p(o\mid t,c)$,\\split by episode};
+\draw[->] (terrain)--(robot); \draw[->] (robot)--(signals); \draw[->] (signals)--(clf); \draw[->] (clf)--(conf);
+% Monte Carlo
+\node[assumed] (maps) at (\xa,0.28) {Procedural maps\\geometry and synthetic\\appearance};
+\node[new]     (bel)  at (\xb,0.28) {Belief update\\M0 geometry, M1 local,\\M2 vote, M3 fusion};
+\node[new]     (plan) at (\xc,0.28) {Risk-aware A*\\rate $1+\lambda(\bar h_i+\kappa\sigma_i)$\\replanning};
+\node[new]     (mis)  at (\xd,0.28) {Mission\\true hazard accumulates,\\hidden from the methods};
+\node[new]     (out)  at (\xe,0.28) {Paired statistics\\$P_s$, exposure, length,\\by map};
+\draw[->] (maps)--(bel); \draw[->] (bel)--(plan); \draw[->] (plan)--(mis); \draw[->] (mis)--(out);
+\draw[->,dashed] (mis.south) -- (\xd,-0.58) -- (\xb,-0.58) -- (bel.south);
+\node[note,fill=black!4] at (8.4,-0.58) {new window $(o,c)$, then replan};
+% Offline bridges
+\draw[->,line width=0.8pt] ([xshift=-7mm]robot.south) -- ([xshift=-7mm]robot.south |- 0,1.62) -- ([xshift=-6mm]mis.north |- 0,1.62) -- ([xshift=-6mm]mis.north);
+\node[note] at (7.6,1.62) {falls per metre, one of the failure models (offline)};
+\draw[->,line width=0.8pt] (conf.south) -- (\xe,1.62) -- ([xshift=6mm]mis.north |- 0,1.62) -- ([xshift=6mm]mis.north);
+\node[note] at (14.25,1.62) {observation model (offline)};
+% Legend
+\node[draw,fill=amberfill,minimum width=3mm,minimum height=2mm,inner sep=0,label={[font=\tiny,inner sep=1pt]right:assumed}] at (9.15,3.82) {};
+\node[draw,fill=greenfill,minimum width=3mm,minimum height=2mm,inner sep=0,label={[font=\tiny,inner sep=1pt]right:implemented here}] at (10.75,3.82) {};
+\node[draw,fill=white,minimum width=3mm,minimum height=2mm,inner sep=0,label={[font=\tiny,inner sep=1pt]right:from the manufacturer or the project}] at (13.0,3.82) {};
+\end{tikzpicture}

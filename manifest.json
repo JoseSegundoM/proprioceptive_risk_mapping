@@ -50,9 +50,9 @@
  "hashes": {
   "data/processed/episodes_campaign.csv": "46c39d51d6094a883a16ffd7c66528bf7b995e8b06738b4e06fe9b0e55f820ae",
   "data/processed/episodes_pilot.csv": "33911df0c6a1cbb89602c74c7e8dc7ec1a664db58502a0ff8552822093823bb1",
-  "paper/main.tex": "c0eaf156dfc9c16eef1e9c41e3a5446f857eec4b9756f5a163426cf5bc82fb76",
-  "paper/paper_final.pdf": "6baf2ca04be2785736c251a512c6e22b62f97ad3dc47b47c07fd5263a962ae8b",
-  "paper/references.bib": "488434e1ea47958ebcf1260ce59e75a089eafd7f3a6fbdac9676ab35595898d5",
+  "paper/main.tex": "3958d2f3727f8d9523406e9efbaa016e02b6314f258e5c5a5d86e312bb6e5d08",
+  "paper/paper_final.pdf": "5e34f292d4c3aedca1f8b0d6d6a23acd4f4db8fdce2737c5dbc8a4d482847e9a",
+  "paper/references.bib": "e886489062a011578b1b38f21d3021ed506fc9474b11bf130dd365d585d96d24",
   "paper/tables/values.tex": "469f0ed555f33e0f4646506d7ec9baa7042d98d370f32acad89c7946c667bf82",
   "results/classifier/classifier_metrics.csv": "1ee8d00678d7e3bbca10ca211d2b93bcff43bd684805e0d5750473934a40e359",
   "results/classifier/classifier_report.json": "9a997fa59297e7dc36082aa248fa884e9afb25135610b9fd2ef563c0afb9a797",

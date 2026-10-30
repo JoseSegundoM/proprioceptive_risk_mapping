@@ -68,8 +68,8 @@ def fig_architecture():
 def fig_configurations():
     d = pd.read_csv(ROOT / "results" / "classifier" / "failure_rates_mujoco.csv")
     d = d[d.cls.isin(maps.CLASSES)]
-    fig, axs = plt.subplots(1, 4, figsize=(TWO, 1.12), constrained_layout=True)
-    panels = [("mean_slip", "Contact slip (m/s)"), ("speed_tracking", "Speed / command (-)"), ("h_mean", "Falls per metre (1/m)"), ("acc_std", "Accel. std (m/s$^2$)")]
+    fig, axs = plt.subplots(1, 4, figsize=(TWO, 1.0), constrained_layout=True)
+    panels = [("mean_slip", "Contact slip (m/s)"), ("speed_tracking", "Speed / command (-)"), ("h_mean", "Falls (1/m)"), ("acc_std", "Accel. std (m/s$^2$)")]
     x = np.arange(4)
     for ax, (col, lab) in zip(axs, panels):
         for i, v in enumerate(CFG):
@@ -112,7 +112,7 @@ def fig_mujoco():
         g = d[(d.variant == variant) & (d.cls == cls) & (d.kind == "homogeneous") & (d.duration_s >= 5.5)].sort_values("instance").iloc[0]
         return np.load(raw / f"{g.episode}.npz")
 
-    fig = plt.figure(figsize=(TWO, 2.05))
+    fig = plt.figure(figsize=(TWO, 1.92))
     gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 0.82], left=0.05, right=0.995, top=0.945, bottom=0.2, wspace=0.26, hspace=0.27)
     shots = [("legged_rough", "(a) Legged, rough"), ("legged_low_friction_fall", "(b) Legged, low friction: fall"), ("wheeled_rough", "(c) Wheeled, rough"), ("wheeled_granular", "(d) Wheeled, granular-like")]
     for i, (n, title) in enumerate(shots):
@@ -249,7 +249,7 @@ def fig_confusion():
 def fig_sensitivity():
     c = pd.read_csv(T / "E3_compare.csv")
     ab = pd.read_csv(T / "E4_compare.csv"); ab = ab[ab.metric == "p_survive"]
-    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.68), gridspec_kw=dict(width_ratios=[2.0, 1]))
+    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.42), gridspec_kw=dict(width_ratios=[2.0, 1]))
     ax = axs[0]
     names = {"aliasing": "aliased share", "appearance_noise": "appearance noise", "hazard_scale": "true hazard $\\times$", "believed_hazard": "believed hazard $\\times$",
              "lambda": "$\\lambda$", "hazard_fraction": "hazard coverage", "believed_eps": "believed $\\varepsilon$", "window_m": "window (m)"}
@@ -268,7 +268,7 @@ def fig_sensitivity():
                 ax.errorbar(r.mean_diff, y + dy, xerr=[[r.mean_diff - r.ci_lo], [r.ci_hi - r.mean_diff]], fmt=STYLE[col][1], color=STYLE[col][0], ms=2.2, lw=0.6, capsize=0.8)
             ticks.append(y); labs.append(f"{names[fac]} {lv:g}"); y += 1
         y += 0.6
-    ax.axvline(0, color="#333333", lw=0.6); ax.set_yticks(ticks); ax.set_yticklabels(labs, fontsize=6); ax.set_ylim(y - 0.4, -0.8); ax.grid(axis="y", visible=False); ax.tick_params(axis="y", length=1, pad=1)
+    ax.axvline(0, color="#333333", lw=0.6); ax.set_yticks(ticks); ax.set_yticklabels(labs, fontsize=5.3); ax.set_ylim(y - 0.4, -0.8); ax.grid(axis="y", visible=False); ax.tick_params(axis="y", length=1, pad=1)
     ax.set_xlabel("Paired difference in survival $P_s$ (95% CI, 100 maps)", labelpad=1)
     ax.errorbar([], [], fmt=STYLE["M2"][1], color=STYLE["M2"][0], ms=3, label="M2 $-$ M1"); ax.errorbar([], [], fmt=STYLE["M3"][1], color=STYLE["M3"][0], ms=3, label="M3 $-$ M2")
     ax.legend(loc="lower right")
@@ -290,7 +290,7 @@ def fig_sensitivity():
 def fig_scenarios():
     e2 = pd.read_csv(T / "E2_summary.csv")
     sc = [("equal", "Equal hazard (assumed)"), ("wheel_sensitive", "Wheel-sensitive (assumed)"), ("mujoco_falls", "Falls per metre (MuJoCo)")]
-    fig, axs = plt.subplots(1, 3, figsize=(TWO, 1.2), sharey=True)
+    fig, axs = plt.subplots(1, 3, figsize=(TWO, 1.08), sharey=True)
     order = ["M0", "M1", "M2", "M3", "ORACLE"]
     for ax, (k, title) in zip(axs, sc):
         for i, v in enumerate(CFG):
@@ -308,6 +308,6 @@ def fig_scenarios():
 
 
 if __name__ == "__main__":
-    fig_architecture(); fig_quadrupeds(); fig_mujoco(); fig_configurations(); fig_scenarios(); fig_performance(); fig_robustness(); fig_confusion(); fig_sensitivity()
+    fig_quadrupeds(); fig_mujoco(); fig_configurations(); fig_scenarios(); fig_performance(); fig_robustness(); fig_confusion(); fig_sensitivity()
     fig_maps(int(sys.argv[1]) if len(sys.argv) > 1 else 12)
     print(sorted(p.name for p in F.glob("*.pdf")))

@@ -39,6 +39,14 @@ gaps = [float(g) for g in re.findall(r"(?:left|right) (-?[\d.]+) mm", fill)]
 check(max(gaps) < 6.0, f"pages full: largest gap above the bottom margin {max(gaps):.1f} mm")
 tops = [float(t) for t in re.findall(r"top ([\d.]+) mm", fill)]
 check(min(tops) >= 36.0, f"EPIC top margin respected: first ink at {min(tops):.1f} mm")
+last = pdf.pages[-1]
+check(not list(last.images), "no images on the last page")
+bbl = (P / "paper_final.bbl").read_text()
+items = re.findall(r"\\bibitem\{(\w+)\}(.*?)(?=\\bibitem|\\end\{thebibliography\})", bbl, re.S)
+check(all("\\doilink" in b or "arxiv.org" in b for _, b in items), f"all {len(items)} references show a DOI or arXiv link")
+all_uris = [str(o.get_object()["/A"].get("/URI", "")) for pg in pdf.pages for o in (pg.get("/Annots") or []) if "/A" in o.get_object()]
+check(sum("doi.org" in u for u in all_uris) >= len(items) - 2, "DOI links are live annotations")
+check(any("10.18687/LACCEI2026.1.1.2664" in u for u in all_uris) and any("scopus.com/pages/publications/105048843694" in u for u in all_uris), "LACCEI paper links to its DOI and to Scopus")
 tex = (P / "main.tex").read_text()
 ab = tex[tex.index(r"\begin{abstract}") + 16:tex.index(r"\end{abstract}")]
 check(len(ab.split()) <= 200, f"abstract {len(ab.split())} words (<=200, limit from the project summary, not confirmed on the site)")
@@ -54,7 +62,7 @@ ver = json.load(open(P / "references_verified.json"))
 bib = (P / "references.bib").read_text()
 cited = set(sum((c.split(",") for c in re.findall(r"\\cite\{([^}]+)\}", tex)), []))
 for k in sorted(cited):
-    check(f"{{{k}," in bib, f"cited {k} in bib" + ("" if k in ver and ver[k]["status"] in ("crossref", "arxiv") else " (NOT in a registry: project self-citation)"))
+    check(f"{{{k}," in bib, f"cited {k} in bib")
 check("calibrated digital twins" in tex, "digital twin appears only as a denial")
 check(not re.search(r"(switch|transition)\w* between (legs|wheels|modes)", tex, re.I), "no in-mission switching claim")
 for name, n in (("E1_perception_sweep", 30000), ("E2_measured_perception", 30000), ("E3_sensitivity", 38400), ("E4_ablation", 10000), ("E5_lambda", 21600), ("E6_course_perception", 20000), ("E7_independent_repeat", 15000), ("E8_spatial_baseline", 12000)):
