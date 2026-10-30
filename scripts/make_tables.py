@@ -145,7 +145,6 @@ conds = [("Synthetic $\\varepsilon$=0.1", ec[ec.eps == 0.1]), ("Synthetic $\\var
          ("Held-out conf., legged", e2[(e2.scenario == "equal") & (e2.config == "point_foot")]),
          ("Held-out conf., wheeled", e2[(e2.scenario == "equal") & (e2.config == "wheel_legged")]),
          ("Course conf., legged", e6[(e6.scenario == "equal") & (e6.config == "point_foot")]),
-         ("Course conf., wheeled", e6[(e6.scenario == "equal") & (e6.config == "wheel_legged")]),
          ("MuJoCo falls, legged", e2[(e2.scenario == "mujoco_falls") & (e2.config == "point_foot")]),
          ("MuJoCo falls, wheeled", e2[(e2.scenario == "mujoco_falls") & (e2.config == "wheel_legged")])]
 L = [r"\begin{tabular}{@{}lccc@{}}", r"\toprule", r"Condition & M1 $-$ M0 & M2 $-$ M1 & M3 $-$ M2 \\ \midrule"]

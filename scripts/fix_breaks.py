@@ -5,6 +5,7 @@ import re, subprocess, sys, tempfile, unicodedata
 from pathlib import Path
 import pypdf
 R = Path(__file__).resolve().parents[1]; P = R / "paper"; MM = 25.4 / 72
+PDF = str(P / "paper_final.pdf")
 ABBR = {"fig.", "figs.", "eq.", "vol.", "no.", "pp.", "al.", "e.g.", "i.e."}
 
 
@@ -32,13 +33,23 @@ HEADINGS = {"hazard.", "belief.", "rules.", "appearance.", "planning.", "simulat
 
 
 def ends_sentence(word):
+    if re.fullmatch(r"[A-Z]\.|[IVX]+\.", word):      # the label of a heading, not a sentence
+        return False
     return word.endswith((".", ".)", ".”")) and word.lower() not in ABBR and word.lower() not in HEADINGS
 
 
+BODY = None
+
+
 def body_height(words):
-    """The most common word height on the page is the body type."""
-    hs = [round(v[3] - v[1], 1) for v in words]
-    return max(set(hs), key=hs.count)
+    """Largest common word height in the document is the body type; tables and captions are smaller."""
+    global BODY
+    if BODY is None:
+        import collections
+        hs = collections.Counter(round(v[3] - v[1], 1) for _, _, sel in columns(PDF) for v in sel)
+        total = sum(hs.values())
+        BODY = max(h for h, c in hs.items() if c > 0.1 * total)
+    return BODY
 
 
 def closes(sel):
@@ -62,18 +73,20 @@ def insert_break(sel, tex):
         following = words[i + 1:i + 5]
         if any(x.endswith("-") for x in following[:3]):
             following = following[:1]
-        pat = r"(\\textbf\{|\\emph\{)?" + r"\}?\s+".join(re.escape(x).replace(r"\~", "~") for x in following[:3])
-        ms = list(re.finditer(pat, tex))
-        if len(ms) == 1:
-            head, tail = tex[:ms[0].start()], tex[ms[0].start():]
-            # Breaks further on were computed for a layout that no longer exists.
-            return head + "\\sentbreak " + tail.replace("\\sentbreak ", ""), (len(words) - i - 1, " ".join(following))
+        for n in (3, 2):           # numbers in the text are macros in the source, so fewer words may have to do
+            pat = r"(\\textbf\{|\\emph\{)?" + r"\}?\s+".join(re.escape(x).replace(r"\~", "~") for x in following[:n])
+            ms = list(re.finditer(pat, tex))
+            if len(ms) == 1:
+                head, tail = tex[:ms[0].start()], tex[ms[0].start():]
+                # Breaks further on were computed for a layout that no longer exists.
+                return head + "\\sentbreak " + tail.replace("\\sentbreak ", ""), (len(words) - i - 1, " ".join(following))
     return None, None
 
 
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if a != "--check"]
     pdf = args[0] if args else str(P / "paper_final.pdf")
+    PDF = pdf
     if "--check" in sys.argv:
         cols = columns(pdf)
         for p, side, sel in cols:
@@ -82,6 +95,7 @@ if __name__ == "__main__":
     tex_path = P / "main.tex"
     for it in range(40):
         compile_()
+        BODY = None
         cols = columns(pdf)
         bad = status(cols)
         print(f"pass {it}: {len(pypdf.PdfReader(pdf).pages)} pages, {len(bad)} columns end mid-sentence")
