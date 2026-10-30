@@ -1,0 +1,14 @@
+glfw==2.10.2
+grpcio==1.85.0
+grpcio-tools==1.85.0
+joblib==1.6.0
+matplotlib==3.6.3
+mujoco==3.13.0
+numpy==1.26.4
+onnxruntime==1.23.2
+pandas==3.0.6
+protobuf==7.36.2
+pypdf==6.21.4
+pytest==7.4.4
+scikit-learn==1.9.1
+SciPy==1.11.4

@@ -1,0 +1,50 @@
+[
+ {
+  "name": "legged_rough",
+  "variant": "point_foot",
+  "cls": "rough",
+  "instance": 0,
+  "seed": 1841519128,
+  "mu": 0.7265983036217316,
+  "relief_m": 0.04937841968397959,
+  "solref_time": 0.02,
+  "sim_time_s": 8.500000000000728,
+  "fell": false
+ },
+ {
+  "name": "legged_low_friction_fall",
+  "variant": "point_foot",
+  "cls": "low_friction",
+  "instance": 0,
+  "seed": 2018341440,
+  "mu": 0.18139609119899341,
+  "relief_m": 0.005008503311861451,
+  "solref_time": 0.02,
+  "sim_time_s": 7.175000000000731,
+  "fell": true
+ },
+ {
+  "name": "wheeled_rough",
+  "variant": "wheel_legged",
+  "cls": "rough",
+  "instance": 0,
+  "seed": 1841519128,
+  "mu": 0.7265983036217316,
+  "relief_m": 0.04937841968397959,
+  "solref_time": 0.02,
+  "sim_time_s": 8.500000000000728,
+  "fell": false
+ },
+ {
+  "name": "wheeled_granular",
+  "variant": "wheel_legged",
+  "cls": "granular",
+  "instance": 0,
+  "seed": 6652554,
+  "mu": 0.7384277597476239,
+  "relief_m": 0.008940494529286174,
+  "solref_time": 0.09902264369856181,
+  "sim_time_s": 8.500000000000728,
+  "fell": false
+ }
+]

@@ -1,0 +1,235 @@
+% IEEE conference format, same structure as the group's HRFEST papers 223 and 235.
+% Every number in the text comes from tables/values.tex, generated from results/.
+%   \def\PDFPROFILE{ieee}   no link annotations, for IEEE PDF eXpress
+%   \def\EPICMARGINS{}      the margins on the IEEE-EPIC author page (top 36 mm, others 19 mm)
+\ifdefined\PDFPROFILE\else\def\PDFPROFILE{interactive}\fi
+\documentclass[conference,a4paper]{IEEEtran}
+\IEEEoverridecommandlockouts
+\ifdefined\EPICMARGINS
+  \usepackage[a4paper,top=36mm,bottom=19mm,left=19mm,right=19mm]{geometry}
+\else
+  \usepackage[a4paper,top=19mm,bottom=25mm,left=17mm,right=17mm]{geometry}  % as the HRFEST papers
+\fi
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{url}
+\usepackage{xcolor}
+\newcommand{\PaperTitle}{Proprioception-Augmented Risk Mapping for a Commercial Quadruped: Terrain-Aware Navigation Across Legged and Wheeled Configurations}
+\newcommand{\PaperAuthors}{Javier Yanpier Garay Yovera, Francisco Jes\'us Rodr\'iguez Huiman, Jose Luis Segundo Manayay}
+\newcommand{\PaperAuthorsPDF}{Javier Yanpier Garay Yovera, Francisco Jes\string\372s Rodr\string\355guez Huiman, Jose Luis Segundo Manayay}
+\input{profile}
+\input{tables/values.tex}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.80}
+\setlength{\textfloatsep}{7pt plus 2pt minus 2pt}
+\setlength{\floatsep}{7pt plus 2pt minus 2pt}
+\setlength{\intextsep}{7pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{0pt}
+
+\begin{document}
+
+\title{Proprioception-Augmented Risk Mapping for a Commercial Quadruped: Terrain-Aware Navigation Across Legged and Wheeled Configurations}
+
+\author{\IEEEauthorblockN{Javier Yanpier Garay Yovera\,\orcid{0009-0001-1645-8724},
+Francisco Jes\'us Rodr\'iguez Huiman\,\orcid{0009-0006-6972-2484},
+Jose Luis Segundo Manayay\,\orcid{0009-0002-9203-8710}}
+\IEEEauthorblockA{Universidad Nacional de Ingenier\'ia (UNI), Faculty of Mechanical Engineering, Lima, Peru\\
+\authoremail{javier.garay.y@uni.pe}; \authoremail{francisco.rodriguez.h@uni.pe}; \authoremail{jose.segundo.m@uni.pe}}}
+
+\maketitle
+
+\begin{abstract}
+Inspection robots build risk maps from geometry, yet slippery or soft ground can look as flat as concrete. This paper studies how proprioceptive evidence should enter a risk map, and whether its value depends on the foot configuration of a commercial quadruped, the DOBOT Rover X1, whose legged and wheeled configurations are fixed before a mission. In MuJoCo, \vnEpisodesTotal{} dynamic episodes on parametrised terrain train a lightweight classifier and measure falls per metre. A separate Monte Carlo study compares geometry-only mapping, local Bayesian updating, appearance-based propagation and an uncertainty-aware fusion on 200 procedural indoor maps with paired statistics. Propagation raised mission survival probability by 0.055 over local updating and fusion added 0.015; both effects held on 200 independent maps, while local updating was practically indistinguishable from geometry. In simulation the legged robot fell on low-friction and soft terrain and the wheeled model never fell, so the benefit of propagation followed the failure model, not perception quality. The classifier reached macro-F1 of 0.935 and 0.999 on held-out episodes but dropped to 0.45 for the legged robot at unseen speeds. All results are simulation only; appearance features remain assumed and no hardware validation is claimed.
+\end{abstract}
+
+\begin{IEEEkeywords}
+legged robots, wheeled-legged robots, proprioception, terrain classification, traversability, risk-aware planning, Monte Carlo simulation
+\end{IEEEkeywords}
+
+\section{Introduction}
+Autonomous inspection of underground and industrial spaces depends on knowing which ground can be crossed. Quadrupeds have operated in such settings~\cite{tranzatto2022,gao2026}, but geometry says little about friction or softness: a wet floor and dry concrete return the same LiDAR profile, and the robot learns the difference only on contact. Commercial quadrupeds expose joint and inertial signals that could reveal it, while keeping their locomotion controllers closed.
+
+This raises a question separate from the classifier itself: \emph{how should a proprioceptive detection enter the planner's risk map?} It can update only the ground already crossed, or generalise to unvisited ground that looks alike. A second question is whether the answer depends on the feet. The DOBOT Rover X1 uses point-foot and wheel modules that are exchanged by hand, so the configuration is fixed before a mission; we treat them as two robots and model no switching.
+
+Comparisons of this kind risk circularity: if failure rates are assumed to differ between wheels and legs, finding that the benefit differs restates the assumption. We therefore separate perception from failure and measure both in dynamic simulation where possible. Our contributions are:
+\begin{enumerate}
+\item A reproducible, paired Monte Carlo comparison of four map-update rules, with independent repetition and sensitivity analysis.
+\item A dynamic-simulation dataset of both configurations on parametrised terrain, and a lightweight classifier stress-tested beyond its training range.
+\item Evidence that the failure model decides how the benefit depends on the feet: simulated falls reverse which configuration gains.
+\end{enumerate}
+This work follows our inspection architecture on a small servo-driven platform~\cite{segundo2026laccei}, but addresses a different question on a different robot and shares no results with it. We claim no novelty for the fusion rule, a tempered Bayesian update of known form~\cite{bissiri2016}.
+
+\section{Related Work}
+Wheels on a quadruped can greatly reduce the cost of transport~\cite{bjelonic2019}, and learned controllers achieve robust hybrid navigation~\cite{lee2024}, but those systems own their controller; here perception and planning act above a closed one. Terrain can be classified from foot forces and joint signals~\cite{bednarek2019}, compliance estimated online for control~\cite{fahmi2020}, and traversability estimated from legged proprioception~\cite{elnoor2024}. We ask instead how such an estimate should spread through a map. Self-supervised methods project proprioceptive labels onto images~\cite{wellhausen2019}, Wild Visual Navigation learns traversability online from visual features~\cite{mattamala2025}, and terrain-property maps combine semantics with proprioceptive estimates~\cite{ewen2022}. Those works use real robots and images, which this paper does not. Our addition is narrower: a controlled, paired measurement of what propagation is worth as classification error and appearance ambiguity vary, across two fixed configurations. Risk-aware planners use CVaR~\cite{fan2021} or evidential uncertainty~\cite{cai2024}; our simpler planner is only a common testbed.
+
+\section{Platform and Simulation Models}
+The manufacturer specifies 15.5\,kg with point feet and 18.5\,kg with wheels, a Livox Mid-360 LiDAR, a RealSense D435i and a Jetson Orin Nano. Dynamics use MuJoCo~\cite{todorov2012} with models built from the manufacturer's files (Fig.~\ref{fig:arch}). The legged model has 12 actuators and walks on the manufacturer's trained policy; the wheeled model has 16 and rolls on a skid-steer controller written for the project, because the manufacturer's is not public. The models weigh 18.65 and 22.08\,kg, not rescaled because the source of the difference is unknown. They are not calibrated digital twins.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig1_architecture.pdf}
+\caption{Study structure. Dynamic simulation supplies the classifier, its confusion and fall rates. Appearance and geometry are assumed inputs of the algorithmic Monte Carlo, where each method sees only its observations.}
+\label{fig:arch}
+\end{figure*}
+
+Validating the models changed the setup. At the project's 200\,Hz control rate, the wheeled stance PD (400\,N\,m/rad, 7\,N\,m\,s/rad) produced a numerical limit cycle of about 70\,m/s$^2$ RMS at the IMU, even on a plane, which a classifier would learn as an artefact. We run physics and the stance PD at 1\,kHz, as a joint servo would; mean vertical contact force then matches model weight within 1\,\% on nominal terrain. The floor has contact priority, since MuJoCo otherwise uses the larger friction of a pair.
+
+\section{Method}
+\emph{Hazard.} A mission crosses terrain of true class $t_k\in\mathcal{T}=\{$nominal, low friction, granular-like, rough$\}$ over segments $\ell_k$. With per-metre hazard $h(t)$ and a patch multiplier $m_k$, survival is
+\begin{equation}
+P_s=\exp(-H),\qquad H=\sum_k \ell_k\, m_k\, h(t_k),
+\label{eq:survival}
+\end{equation}
+since independent exponential failure times have additive hazards. $P_s=0$ if the goal is not reached within three times the shortest path. The hazard is a failure model, distinct from the classifier, and is never derived from F1.
+
+\emph{Belief.} Each cell $i$ holds $b_i(t)$. Geometry observes relief only, so the prior separates rough terrain and nothing else:
+\begin{equation}
+b_i^0(t)\propto \pi(t)\,\mathcal{N}(r_i;\mu_t,\sigma_g^2).
+\label{eq:prior}
+\end{equation}
+Every travelled window of $\ell_w$ metres yields a classifier output $o$ and confidence bin $c$, with likelihood $\hat p(o\mid t,c)$ estimated on calibration episodes. Windows are assumed conditionally independent given $t$.
+
+\emph{Update rules.} \textbf{M0} keeps \eqref{eq:prior}. \textbf{M1} applies Bayes' rule only to the cells of the traversed window:
+\begin{equation}
+b_i(t)\leftarrow b_i(t)\,\hat p(o\mid t,c)\Big/\sum\nolimits_{t'} b_i(t')\,\hat p(o\mid t',c).
+\label{eq:bayes}
+\end{equation}
+\textbf{M2} is an online appearance vote. With kernel $s_i^w=\exp(-\lVert a_i-\bar a_w\rVert^2/2\sigma_k^2)$ between the appearance feature of cell $i$ and the mean feature of window $w$, votes are $V_i(k)=\sum_w s_i^w\mathbf{1}[o_w=k]$. Where $\sum_k V_i(k)\geq\tau$, the belief is replaced by the winning label, taken as correct. \textbf{M3} instead applies a tempered update,
+\begin{equation}
+\begin{aligned}
+\log b_i(t)={}&\log b_i^0(t)+D_i(t)\\
+&+\max\bigl[P_i(t)-\max\nolimits_{t'}P_i(t'),\,-C\bigr]+\text{const},
+\end{aligned}
+\label{eq:m3}
+\end{equation}
+where $D_i$ sums the log-likelihoods of windows that crossed cell $i$ and $P_i(t)=\rho\sum_w s_i^w\log\hat p(o_w\mid t,c_w)$. The exponent $\rho<1$ discounts correlated evidence, as in power posteriors~\cite{bissiri2016}; $C$ keeps propagated evidence from reaching certainty.
+
+\emph{Planning.} With believed hazards $\hat h(t)$, the expected rate is $\bar h_i=\sum_t b_i(t)\hat h(t)$. By Jensen's inequality $-\log\mathbb{E}[e^{-H}]\leq\mathbb{E}[H]$, so $\sum\ell\,\bar h$ upper-bounds the negative log survival under the belief. A* minimises
+\begin{equation}
+J=\sum\nolimits_k\ell_k\bigl[1+\lambda\bigl(\bar h_{i_k}+\kappa\,\sigma_{i_k}\bigr)\bigr],
+\label{eq:cost}
+\end{equation}
+with $\sigma_i$ the posterior standard deviation of the hazard ($\kappa=0$ except in M3). Costs are at least 1 per metre, so the octile distance is admissible. Replanning follows each window; an update costs $O(N|\mathcal{T}|)$ and a search $O(N\log N)$ for $N$ cells.
+
+\section{Experimental Setup}
+\emph{Dynamic simulation.} Each configuration ran 150 episodes per class, plus 50 on ramps and 50 on mixed courses (\vnEpisodesTotal{} in total), with a fresh terrain instance and a command of 0.4--0.9\,m/s and 0 or $\pm$0.35\,rad/s. Assumed ranges: friction 0.7--1.2 (nominal, rough), 0.12--0.30 (low friction), 0.45--0.8 (granular-like); relief 0--6\,mm on smooth classes, 5--15\,mm granular-like, 25--60\,mm rough; contact time constant 0.02\,s, or 0.05--0.15\,s granular-like. Granular-like means soft, lossy contact, not particles, and MuJoCo friction is a parametrised model, not a measurement of real floors. A fall is a body tilt beyond 30$^\circ$.
+
+\emph{Classifier.} Features come from 2\,s windows at 100\,Hz: IMU (acceleration, angular rate, tilt) and joints (position, velocity, commanded torque, not contact force), plus the command. Each channel gives its standard deviation, difference RMS and three band powers. We add assumed noise and bias, and drop the last 1\,s before a fall so that the fall cannot identify a terrain. Truth signals serve validation only. We use a random forest and a logistic regression, with five-fold cross-validation \emph{by episode} and a 60/20/20 train/calibration/test split for the observation model.
+
+\emph{Monte Carlo.} Maps have $48\times32$ cells of 0.5\,m with drifts, crossings, rooms and pillars, and about \vhazFrac{}\,\% hazard coverage. Appearance is synthetic: per-map random prototypes with noise, so no terrain-to-look relation carries between maps; 15\,\% of hazard patches look like floor, and decoys make safe ground look hazardous. There is no rendering, SLAM error or dynamics here. Evaluation uses 200 maps with five replicates and common random numbers; the repetition uses 200 unseen maps. Parameters were tuned only on 50 development maps ($\sigma_k$=\vtunedKernelTwo{} for M2 and \vtunedKernelThree{} for M3, $\tau$=\vtunedTau{}, $\rho$=\vtunedRho{}, $\kappa$=\vtunedKappa{}; the last three at the edge of their grids). Fixed assumptions are $\lambda=25$, $\ell_w=1$\,m and hazard $[0.001,0.06,0.04,0.03]$\,m$^{-1}$ over $\mathcal{T}$, swept in Section~\ref{sec:sens}. In all, \vnMissionsTotal{} evaluation missions were run.
+
+\emph{Statistics.} The map is the unit; replicates are averaged within it. We report 95\,\% bootstrap intervals of paired differences (10\,000 map resamples), Wilcoxon tests with Holm correction, and $d_z$. Hypotheses and refutation criteria were recorded before the campaigns: \textbf{H1} M2 beats M1 and M0; \textbf{H2} M1 beats M0; \textbf{H3} M3 beats M2; \textbf{H4} IMU plus joints beats each alone; \textbf{H5} the propagation gain differs between configurations through measured perception alone.
+
+\section{Results and Discussion}
+\emph{Physical behaviour.} The legged robot fell in \vfallsLegLow{} low-friction and \vfallsLegGran{} granular-like episodes and never on nominal or rough terrain, giving Jeffreys-posterior hazards of \vhLegLow{} and \vhLegGran{}\,m$^{-1}$, while contact slip rose from \vslipLegNom{} to \vslipLegLow{}\,m/s on low friction. The wheeled model never fell in 650 episodes, including ramps. The wheeled controller is ours, with a stiff stance, and has no fidelity claim, so the result describes these controllers only (Table~\ref{tab:phys}, Figs.~\ref{fig:mujoco} and~\ref{fig:config}).
+
+\begin{table}[t]
+\centering
+\caption{MuJoCo Campaign (Jeffreys Posterior for Falls per Metre)}
+\label{tab:phys}
+\scriptsize
+\resizebox{\columnwidth}{!}{\input{tables/tab_physics.tex}}
+\end{table}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig9_mujoco.pdf}
+\caption{MuJoCo simulation. (a)--(d) Renders of campaign episodes, with floor colour added for display only. (e)--(h) Logged signals over 2\,s on the four terrains, from example episodes that lasted at least 5.5\,s. Commanded torque is the actuator command, not a contact force.}
+\label{fig:mujoco}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig2_configurations.pdf}
+\caption{Dynamic behaviour by configuration and terrain, with 95\,\% credible intervals on falls. Wheeled slip and acceleration come from a different controller and contact geometry, and are not directly comparable with legged values.}
+\label{fig:config}
+\end{figure*}
+
+
+\emph{Classification.} On \vnEpLeg{} legged and \vnEpWhe{} wheeled episodes (Table~\ref{tab:clf}), a random window split inflates legged macro-F1 from \vfOneLeg{} to \vfLeakLeg{}, which measures the leakage avoided. H4 holds for the legged robot: fusion beats IMU by [\vfusImuLoLeg{}, \vfusImuHiLeg{}] and joints by [\vfusJointLoLeg{}, \vfusJointHiLeg{}]. For the wheeled robot the interval against IMU reaches zero, so H4 is not established there. The high scores say little about real ground: classes are separated by construction, and a wheeled F1 of \vfOneWhe{} mostly shows how clean simulated signals are. The stress tests are more informative. Mixed courses give \vfCourseLeg{} and \vfCourseWhe{}; with the legged robot, unseen speeds give as little as \vspeedLegMin{} (\vspeedLegLogMin{} with logistic regression) and unseen terrain parameters \vparamLegMin{}. Ramps, never trained on, are read as a hazard class in \vslopeHazardLeg{}\,\% (legged) and \vslopeHazardWhe{}\,\% (wheeled) of windows. The classifier interpolates within its training range and should not be trusted beyond it. Inference takes about \vinferMsLeg{}\,ms on a laptop core, not measured on the Jetson.
+
+\begin{table}[t]
+\centering
+\caption{Classifier by Episode: Macro-F1 [95\,\% Interval] (Brier)}
+\label{tab:clf}
+\scriptsize
+\resizebox{\columnwidth}{!}{\input{tables/tab_classifier.tex}}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Monte Carlo at $\varepsilon=0.1$, Equal Assumed Hazard (200 Maps, 95\,\% Bootstrap Intervals)}
+\label{tab:main}
+\scriptsize
+\resizebox{\columnwidth}{!}{\input{tables/tab_main.tex}}
+\end{table}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4_risk_maps_trajectories.pdf}
+\caption{One evaluation map (id 12, fixed in advance) at $\varepsilon=0.1$: true terrain with the four routes, and the hazard each method believes at mission end. Dots: start; stars: goal; dark cells: rock or high believed hazard. Here M1 happens to beat M2 and M3: the mean gain does not hold on every map.}
+\label{fig:maps}
+\end{figure*}
+
+\emph{Map-update rules} (Tables~\ref{tab:main} and~\ref{tab:contrast}, Figs.~\ref{fig:maps} and~\ref{fig:robust}). \textbf{H1 is supported}: at $\varepsilon=0.1$, M2 improves $P_s$ over M1 by \vdTwoOne{} [\vdTwoOneLo{}, \vdTwoOneHi{}], $d_z$=\vdTwoOneDz{}, and the repetition gives \vrepTwoOne{} [\vrepTwoOneLo{}, \vrepTwoOneHi{}]. Against M0, M2 and M3 cut the accumulated hazard by \vriskRedTwo{}\,\% and \vriskRedThree{}\,\%. The cost is \vlenAddTwo{}\,m of path and more replanning (\vrepMt{} against \vrepMo{} replans); a search took \vplanMsMt{}--\vplanMsMh{}\,ms on average in Python on a laptop. On one replicate per map, realised success was \vsuccZeroMz{} for M0 (Wilson [\vwilsonLoMz{}, \vwilsonHiMz{}]) and \vsuccZeroMh{} for M3 ([\vwilsonLoMh{}, \vwilsonHiMh{}]). \textbf{H2 is not established}: M1 improves on M0 by only \vdOneZero{} [\vdOneZeroLo{}, \vdOneZeroHi{}], Holm-adjusted $p$=\vdOneZeroHolm{}, and the repetition interval [\vrepOneZeroLo{}, \vrepOneZeroHi{}] includes zero. Local updates arrive after the ground is crossed and barely change what is crossed next. A stronger baseline, added after internal review, also spreads evidence to neighbouring cells by distance alone (reach of 2\,m, tuned on development maps): it gains only \vspatialVsLocal{} [\vspatialVsLocalLo{}, \vspatialVsLocalHi{}] over M1, and M2 still beats it by \vspatialGain{} [\vspatialGainLo{}, \vspatialGainHi{}], so appearance, not mere spatial spread, carries the gain. \textbf{H3 is supported with a small effect}: M3 adds \vdThreeTwo{} [\vdThreeTwoLo{}, \vdThreeTwoHi{}] over M2, \vrepThreeTwo{} on repetition, growing with classifier error (\vdThreeTwoFive{} at $\varepsilon=0.5$). All methods stay well below the oracle bound of \vpsOrc{}.
+
+\begin{figure*}[t]
+\centering
+\begin{minipage}[t]{0.49\textwidth}\centering
+\includegraphics[width=\linewidth]{figures/fig6_robustness.pdf}
+\caption{Robustness to classifier error (mean and 95\,\% interval, 200 maps; synthetic symmetric confusion).}
+\label{fig:robust}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}\centering
+\includegraphics[width=\linewidth]{figures/fig7_confusion.pdf}
+\caption{Confusion on held-out episodes (fusion, forest), normalised by true class; source of the measured observation model.}
+\label{fig:conf}
+\end{minipage}
+\end{figure*}
+
+\begin{table}[t]
+\centering
+\caption{Paired Differences in $P_s$ [95\,\% Bootstrap Interval]}
+\label{tab:contrast}
+\scriptsize
+\resizebox{\columnwidth}{!}{\input{tables/tab_contrasts.tex}}
+\end{table}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig3_measured_scenarios.pdf}
+\caption{$P_s$ with measured classifier confusion (Fig.~\ref{fig:conf}) under three failure models (mean and 95\,\% interval, 200 maps). Filled: legged; open: wheeled. The configuration that gains most depends on the failure model.}
+\label{fig:scen}
+\end{figure*}
+
+\emph{Does the benefit depend on the feet?} With equal assumed hazards and only the measured confusion differing, the M2$-$M1 gain is \vintLegEqual{} (legged) and \vintWheEqual{} (wheeled). Their difference, \vintDiffEqual{} [\vintLoEqual{}, \vintHiEqual{}], excludes zero, so H5 survives its recorded criterion, but the effect is negligible: perception quality creates no meaningful difference between configurations. Fig.~\ref{fig:scen} shows what does. With an assumed table that penalises wheels, the gain is larger for wheels (\vintWheSens{} against \vintLegSens{}). With simulated falls per metre (Fig.~\ref{fig:config}), the ordering reverses: legged \vintLegFalls{}, wheeled \vintWheFalls{}, because wheeled $P_s$ is already \vfallPsWheMz{} under M0, a level set by the Jeffreys prior since no fall occurred. The Monte Carlo returns whichever failure model it is given, so an unmeasured table should not be used to claim that one configuration benefits more. Using mixed-course confusion lowers the M2 gain somewhat while M3 holds (Table~\ref{tab:contrast}).
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig8_sensitivity_ablation.pdf}
+\caption{Left: sensitivity of the paired gains to assumed parameters at $\varepsilon=0.1$. Right: ablation of M3 on 200 maps. Intervals crossing zero show no measurable effect.}
+\label{fig:sens}
+\end{figure*}
+
+\emph{Sensitivity and ablation.}\label{sec:sens} The propagation gain depends on the assumed appearance channel (Fig.~\ref{fig:sens}): it falls from \valiasZero{} with no aliasing to \valiasHigh{} [\valiasHighLo{}, \valiasHighHi{}] when half the patches are aliased, and to \vnoiseHigh{} [\vnoiseHighLo{}, \vnoiseHighHi{}] at high appearance noise. It scales with hazard, from \vhzLow{} to \vhzHigh{} across a 16-fold range. In M3, removing the confusion model (\vabConf{} [\vabConfLo{}, \vabConfHi{}]) or the tempering (\vabTemper{} [\vabTemperLo{}, \vabTemperHi{}]) has no measurable cost, so these are not supported as contributors. Removing propagation costs \vabProp{} and the uncertainty penalty \vabUnc{}. A higher $\lambda$ partly replaces that penalty: at $\varepsilon=0.3$, $\lambda=400$, M3 without it reaches \vlamHighNouncThree{}, M3 \vlamHighThree{} and M2 \vlamHighTwo{}. Even with each method at its best swept $\lambda$, M3 exceeds M2 by \vbestBest{} [\vbestBestLo{}, \vbestBestHi{}] at $\varepsilon=0.1$, so the soft fusion appears to account for the persistent part. This sweep used evaluation maps and is descriptive.
+
+\emph{Limitations.} No result comes from the physical robot, and none validates a real mine. The Monte Carlo is algorithmic: appearance is synthetic, so H1 rests on an assumption that vision must earn, and work on real images~\cite{wellhausen2019,mattamala2025} is the better guide to it. Main-study hazards are assumed. Falls are a narrow notion of failure, from short episodes on homogeneous ground. Joint signals have not been captured from the robot, and the sim-to-real gap of the classifier is unknown and likely large. Gazebo produced no result here: it follows the pose computed by MuJoCo. Under ROS~2 Jazzy its legged motion and sensor gates passed; the wheeled motion gate failed (0.184\,m/s after release).
+
+\section{Conclusion}
+In this simulation study, generalising proprioceptive evidence by appearance raised mission survival, while updating only the crossed ground did almost nothing. A soft, uncertainty-penalised fusion added a small gain that grew with classifier error. The failure model, not perception, decided whether the benefit favours legs or wheels. Next steps are capturing joint signals on the robot under supervision, replacing synthetic appearance with camera features, and measuring failure on real surfaces.
+
+\section*{Reproducibility}
+The Monte Carlo simulator, map generator, MuJoCo capture and classifier code, per-mission records with their seeds, the evaluation maps, window features and the scripts that regenerate every number, table and figure (\texttt{analyze\_mc.py}, \texttt{make\_tables.py}, \texttt{generate\_figures.py}) are available at \url{https://github.com/JoseSegundoM/proprioceptive_risk_mapping}. The robot models come from the project repository \texttt{mine\_sentinel\_autonomy} at commit \texttt{eca13b0}, and raw MuJoCo signals are regenerated from their recorded seeds. Results carry SHA-256 checksums in \texttt{manifest.json}.
+
+\bibliographystyle{IEEEtran_doi}
+\bibliography{references}
+
+\end{document}
