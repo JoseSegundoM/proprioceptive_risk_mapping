@@ -13,3 +13,6 @@ __pycache__/
 .venv/
 ws_build/
 data/raw/
+paper/figures/photos/
+paper/paper_real_photos.*
+epic2026_latex_package_real_photos.zip

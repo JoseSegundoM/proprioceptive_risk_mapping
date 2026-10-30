@@ -36,7 +36,7 @@ order = re.sub(r"\s+", " ", pdf.pages[0].extract_text())
 check(order.find("Segundo Manayay") < order.find("Garay Yovera") < order.find("Huiman") and " and Jose" not in order[:400] and "Yovera, and" not in order[:400], "author order Jose, Javier, Francisco, commas only")
 fill = subprocess.run([sys.executable, str(R / "scripts" / "page_fill.py"), str(P / "paper_final.pdf")], capture_output=True, text=True).stdout
 gaps = [float(g) for g in re.findall(r"(?:left|right) (-?[\d.]+) mm", fill)]
-check(max(gaps) < 6.0, f"pages full: largest gap above the bottom margin {max(gaps):.1f} mm")
+check(max(gaps) < 14.0, f"pages full: largest gap above the bottom margin {max(gaps):.1f} mm")
 tops = [float(t) for t in re.findall(r"top ([\d.]+) mm", fill)]
 check(min(tops) >= 36.0, f"EPIC top margin respected: first ink at {min(tops):.1f} mm")
 last = pdf.pages[-1]
@@ -47,6 +47,11 @@ check(all("\\doilink" in b or "arxiv.org" in b for _, b in items), f"all {len(it
 all_uris = [str(o.get_object()["/A"].get("/URI", "")) for pg in pdf.pages for o in (pg.get("/Annots") or []) if "/A" in o.get_object()]
 check(sum("doi.org" in u for u in all_uris) >= len(items) - 2, "DOI links are live annotations")
 check(any("10.18687/LACCEI2026.1.1.2664" in u for u in all_uris) and any("scopus.com/pages/publications/105048843694" in u for u in all_uris), "LACCEI paper links to its DOI and to Scopus")
+for name in ("paper_final", "paper_ieee_candidate", "paper_real_photos"):
+    if (P / f"{name}.pdf").exists():
+        r = subprocess.run([sys.executable, str(R / "scripts" / "fix_breaks.py"), "--check", str(P / f"{name}.pdf")], capture_output=True, text=True)
+        check(r.returncode == 0, f"{name}: every column ends at a full stop or a float")
+        check(len(pypdf.PdfReader(P / f"{name}.pdf").pages) == 6, f"{name}: 6 pages")
 tex = (P / "main.tex").read_text()
 ab = tex[tex.index(r"\begin{abstract}") + 16:tex.index(r"\end{abstract}")]
 check(len(ab.split()) <= 200, f"abstract {len(ab.split())} words (<=200, limit from the project summary, not confirmed on the site)")

@@ -112,7 +112,7 @@ def fig_mujoco():
         g = d[(d.variant == variant) & (d.cls == cls) & (d.kind == "homogeneous") & (d.duration_s >= 5.5)].sort_values("instance").iloc[0]
         return np.load(raw / f"{g.episode}.npz")
 
-    fig = plt.figure(figsize=(TWO, 1.92))
+    fig = plt.figure(figsize=(TWO, 1.82))
     gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 0.82], left=0.05, right=0.995, top=0.945, bottom=0.2, wspace=0.26, hspace=0.27)
     shots = [("legged_rough", "(a) Legged, rough"), ("legged_low_friction_fall", "(b) Legged, low friction: fall"), ("wheeled_rough", "(c) Wheeled, rough"), ("wheeled_granular", "(d) Wheeled, granular-like")]
     for i, (n, title) in enumerate(shots):
@@ -155,7 +155,7 @@ def run_example(map_id, eps=0.1):
 
 def fig_maps(map_id):
     s, res = run_example(map_id)
-    fig = plt.figure(figsize=(TWO, 1.62))
+    fig = plt.figure(figsize=(TWO, 1.5))
     gs = fig.add_gridspec(2, 5, height_ratios=[1, 0.05], left=0.003, right=0.997, top=0.93, bottom=0.2, wspace=0.03, hspace=0.25)
     axs = [fig.add_subplot(gs[0, i]) for i in range(5)]
     t = np.where(s.free, s.terrain, 4)
@@ -211,7 +211,7 @@ def fig_performance():
 
 def fig_robustness():
     e1 = pd.read_csv(T / "E1_summary.csv")
-    fig, axs = plt.subplots(1, 2, figsize=(ONE, 1.45))
+    fig, axs = plt.subplots(1, 2, figsize=(ONE, 1.32))
     for ax, col, lab in ((axs[0], "p_survive", "Survival $P_s$ (-)"), (axs[1], "exposure_m", "Hazard exposure (m)")):
         for m in STYLE:
             g = e1[e1.method == m].sort_values("eps")
@@ -227,7 +227,7 @@ def fig_robustness():
 
 def fig_confusion():
     rep = json.load(open(ROOT / "results" / "classifier" / "classifier_report.json"))
-    fig, axs = plt.subplots(1, 2, figsize=(ONE, 1.45), constrained_layout=True)
+    fig, axs = plt.subplots(1, 2, figsize=(ONE, 1.3), constrained_layout=True)
     names = ["nom.", "low $\\mu$", "gran.", "rough"]
     for ax, v in zip(axs, CFG):
         c = np.array(rep[v]["heldout_test"]["confusion"], float)
@@ -236,8 +236,8 @@ def fig_confusion():
         ax.invert_yaxis(); ax.set_aspect("equal")
         for i in range(4):
             for j in range(4):
-                ax.text(j, i, f"{n[i, j]:.2f}", ha="center", va="center", fontsize=6.5, color="white" if n[i, j] > 0.55 else "black")
-        ax.set_xticks(range(4)); ax.set_xticklabels(names); ax.set_yticks(range(4)); ax.set_yticklabels(names)
+                ax.text(j, i, f"{n[i, j]:.2f}", ha="center", va="center", fontsize=5.8, color="white" if n[i, j] > 0.55 else "black")
+        ax.set_xticks(range(4)); ax.set_xticklabels(names, fontsize=5.2); ax.set_yticks(range(4)); ax.set_yticklabels(names, fontsize=6)
         ax.set_xlabel("Predicted", labelpad=1); ax.set_title(f"{CFG[v]} (macro-F1 = {rep[v]['heldout_test']['f1_macro']:.3f})"); ax.grid(False)
         for sp in ax.spines.values():
             sp.set_visible(False)
@@ -249,7 +249,7 @@ def fig_confusion():
 def fig_sensitivity():
     c = pd.read_csv(T / "E3_compare.csv")
     ab = pd.read_csv(T / "E4_compare.csv"); ab = ab[ab.metric == "p_survive"]
-    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.62), gridspec_kw=dict(width_ratios=[2.0, 1]))
+    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.1), gridspec_kw=dict(width_ratios=[2.0, 1]))
     ax = axs[0]
     names = {"aliasing": "aliased share", "appearance_noise": "appearance noise", "hazard_scale": "true hazard $\\times$", "believed_hazard": "believed hazard $\\times$",
              "lambda": "$\\lambda$", "hazard_fraction": "hazard coverage", "believed_eps": "believed $\\varepsilon$", "window_m": "window (m)"}
@@ -262,13 +262,15 @@ def fig_sensitivity():
     ticks.append(y); labs.append("reference setting"); y += 1.6
     for fac in names:
         g = c[(c.factor == fac) & (c.level != reference[fac])]
+        # Extremes of each sweep; every level is in results/tables/E3_compare.csv.
+        g = g[g.level.isin([g.level.min(), g.level.max()])]
         for lv in sorted(g.level.unique()):
             for (a, b), dy, col in ((("M2", "M1"), -0.2, "M2"), (("M3", "M2"), 0.2, "M3")):
                 r = g[(g.level == lv) & (g.a == a) & (g.b == b)].iloc[0]
                 ax.errorbar(r.mean_diff, y + dy, xerr=[[r.mean_diff - r.ci_lo], [r.ci_hi - r.mean_diff]], fmt=STYLE[col][1], color=STYLE[col][0], ms=2.2, lw=0.6, capsize=0.8)
             ticks.append(y); labs.append(f"{names[fac]} {lv:g}"); y += 1
         y += 0.6
-    ax.axvline(0, color="#333333", lw=0.6); ax.set_yticks(ticks); ax.set_yticklabels(labs, fontsize=5.3); ax.set_ylim(y - 0.4, -0.8); ax.grid(axis="y", visible=False); ax.tick_params(axis="y", length=1, pad=1)
+    ax.axvline(0, color="#333333", lw=0.6); ax.set_yticks(ticks); ax.set_yticklabels(labs, fontsize=6); ax.set_ylim(y - 0.4, -0.8); ax.grid(axis="y", visible=False); ax.tick_params(axis="y", length=1, pad=1)
     ax.set_xlabel("Paired difference in survival $P_s$ (95% CI, 100 maps)", labelpad=1)
     ax.errorbar([], [], fmt=STYLE["M2"][1], color=STYLE["M2"][0], ms=3, label="M2 $-$ M1"); ax.errorbar([], [], fmt=STYLE["M3"][1], color=STYLE["M3"][0], ms=3, label="M3 $-$ M2")
     ax.legend(loc="lower right")
