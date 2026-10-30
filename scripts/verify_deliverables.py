@@ -32,6 +32,13 @@ for page, t in enumerate(pdf.pages):
     words = (t.extract_text() or "").strip().splitlines()
     if words:
         check(not re.fullmatch(r"\d+", words[-1].strip()), f"no page number on page {page + 1}")
+order = re.sub(r"\s+", " ", pdf.pages[0].extract_text())
+check(order.find("Segundo Manayay") < order.find("Garay Yovera") < order.find("Huiman") and " and Jose" not in order[:400] and "Yovera, and" not in order[:400], "author order Jose, Javier, Francisco, commas only")
+fill = subprocess.run([sys.executable, str(R / "scripts" / "page_fill.py"), str(P / "paper_final.pdf")], capture_output=True, text=True).stdout
+gaps = [float(g) for g in re.findall(r"(?:left|right) (-?[\d.]+) mm", fill)]
+check(max(gaps) < 6.0, f"pages full: largest gap above the bottom margin {max(gaps):.1f} mm")
+tops = [float(t) for t in re.findall(r"top ([\d.]+) mm", fill)]
+check(min(tops) >= 36.0, f"EPIC top margin respected: first ink at {min(tops):.1f} mm")
 tex = (P / "main.tex").read_text()
 ab = tex[tex.index(r"\begin{abstract}") + 16:tex.index(r"\end{abstract}")]
 check(len(ab.split()) <= 200, f"abstract {len(ab.split())} words (<=200, limit from the project summary, not confirmed on the site)")
