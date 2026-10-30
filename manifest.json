@@ -50,10 +50,10 @@
  "hashes": {
   "data/processed/episodes_campaign.csv": "46c39d51d6094a883a16ffd7c66528bf7b995e8b06738b4e06fe9b0e55f820ae",
   "data/processed/episodes_pilot.csv": "33911df0c6a1cbb89602c74c7e8dc7ec1a664db58502a0ff8552822093823bb1",
-  "paper/main.tex": "8eced20fe8d06d68c1de668b6783c5e2201b9da9b8c5d7d275f16f646ba51a6c",
-  "paper/paper_final.pdf": "590c99751018fecd6a49a9844eb3032ad6ce1e19a9245a4ef4d9a3bee05b0967",
+  "paper/main.tex": "c0eaf156dfc9c16eef1e9c41e3a5446f857eec4b9756f5a163426cf5bc82fb76",
+  "paper/paper_final.pdf": "6baf2ca04be2785736c251a512c6e22b62f97ad3dc47b47c07fd5263a962ae8b",
   "paper/references.bib": "488434e1ea47958ebcf1260ce59e75a089eafd7f3a6fbdac9676ab35595898d5",
-  "paper/tables/values.tex": "a474177e898b6eb9d7fe2f0bfe9dbb772420ac65c467cf66021d8f732229946d",
+  "paper/tables/values.tex": "469f0ed555f33e0f4646506d7ec9baa7042d98d370f32acad89c7946c667bf82",
   "results/classifier/classifier_metrics.csv": "1ee8d00678d7e3bbca10ca211d2b93bcff43bd684805e0d5750473934a40e359",
   "results/classifier/classifier_report.json": "9a997fa59297e7dc36082aa248fa884e9afb25135610b9fd2ef563c0afb9a797",
   "results/classifier/failure_rates_mujoco.csv": "b947d587d69c48968ad0435eacd80c63a35e1b35aca8b97a4e09cc4771942b0c",
@@ -88,5 +88,5 @@
   "results/tables/E8_compare.csv": "7c18d7346638206173ed08c63adaee78bc9b242ee3328341dcea81a9826c3478",
   "results/tables/E8_summary.csv": "720b22bce9eaf6397e10e89f4c2c66e14debf0d839feb5d40c3d24520b7e2dad"
  },
- "paper_format": "IEEEtran conference, A4"
+ "paper_format": "IEEEtran conference, A4, IEEE-EPIC margins"
 }

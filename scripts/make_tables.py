@@ -53,6 +53,13 @@ for v, p in (("point_foot", "Leg"), ("wheel_legged", "Whe")):
         m(f"slip{p}{q}", r.mean_slip, "{:.3f}")
         m(f"track{p}{q}", r.speed_tracking, "{:.2f}")
 
+# ---- Terrain parameters: the ranges of src/physics/terrains.py, assumed scenario values
+L = [r"\begin{tabular}{@{}lccc@{}}", r"\toprule", r"Terrain & Friction $\mu$ & Relief (mm) & Contact time constant (s) \\ \midrule",
+     r"Nominal & 0.70--1.20 & 0--6 & 0.02 \\", r"Low friction & 0.12--0.30 & 0--6 & 0.02 \\",
+     r"Granular-like & 0.45--0.80 & 5--15 & 0.05--0.15 \\", r"Rough & 0.70--1.20 & 25--60 & 0.02 \\",
+     r"Ramp (5--12$^\circ$, test only) & 0.70--1.20 & none & 0.02 \\", r"\bottomrule", r"\end{tabular}"]
+(OUT / "tab_terrain.tex").write_text("\n".join(L))
+
 # ---- Table II: classifier
 k = pd.read_csv(C / "classifier_metrics.csv")
 rep = json.load(open(C / "classifier_report.json"))
@@ -95,6 +102,16 @@ for v, p in (("point_foot", "Leg"), ("wheel_legged", "Whe")):
     sl = r["slope_prediction_share"]
     m(f"slopeHazard{p}", 100 * (1 - sl[0]), "{:.0f}")
     m(f"slopeNom{p}", 100 * sl[0], "{:.0f}")
+for v, p_ in (("point_foot", "Leg"), ("wheel_legged", "Whe")):
+    for i, q in enumerate(("Nom", "Low", "Gran", "Rough")):
+        m(f"rec{p_}{q}", rep[v]["heldout_test"]["recall"][i], "{:.2f}")
+    z_ = np.load(ROOT / "data" / "processed" / f"features_campaign_{v}_n1.npz")
+    m(f"dimImu{p_}", z_["imu"].shape[1], "{:d}"); m(f"dimJoint{p_}", z_["joints"].shape[1], "{:d}")
+    for key, q in (("speed_shift", "Sh"), ("noise_x3", "Nx")):
+        m(f"f{q}{p_}", rep[v][key]["f1_macro"])
+    m(f"eceFor{p_}", get(k, variant=v, features="fusion", model="forest", split="by_episode").ece)
+    m(f"eceLog{p_}", get(k, variant=v, features="fusion", model="logistic", split="by_episode").ece)
+    m(f"fLog{p_}", get(k, variant=v, features="fusion", model="logistic", split="by_episode").f1_macro)
 g = gen[(gen.model == "forest") & (gen.with_cmd)]
 gl = gen[(gen.model == "logistic") & (gen.with_cmd)]
 m("speedLegMin", g[(g.variant == "point_foot") & g["shift"].str.startswith("speed")].f1_macro.min())
@@ -139,6 +156,20 @@ L += [r"\bottomrule", r"\end{tabular}"]
 (OUT / "tab_contrasts.tex").write_text("\n".join(L))
 
 
+# ---- Scenarios with measured confusion
+su = pd.read_csv(T / "E2_summary.csv")
+L = [r"\begin{tabular}{@{}llcccc@{}}", r"\toprule", r"Failure model & Config. & M0 & M1 & M2 & M3 \\ \midrule"]
+for sc, lab in (("equal", "Equal (assumed)"), ("wheel_sensitive", "Wheel-sensitive (assumed)"), ("mujoco_falls", "Falls per metre (MuJoCo)")):
+    for cfg, cl in (("point_foot", "Legged"), ("wheel_legged", "Wheeled")):
+        row = [lab if cfg == "point_foot" else "", cl]
+        for me in ("M0", "M1", "M2", "M3"):
+            r = get(su, scenario=sc, config=cfg, method=me)
+            row.append(f"{r.p_survive:.3f} ({r.exposure_m:.1f})")
+        L.append(" & ".join(row) + r" \\")
+L += [r"\bottomrule", r"\end{tabular}"]
+(OUT / "tab_scenarios.tex").write_text("\n".join(L))
+
+
 def pair(prefix, g, a, b):
     r = get(g[g.metric == "p_survive"], a=a, b=b)
     m(prefix, r.mean_diff, "{:+.3f}"); m(prefix + "Lo", r.ci_lo, "{:+.3f}"); m(prefix + "Hi", r.ci_hi, "{:+.3f}")
@@ -173,7 +204,18 @@ for sc, p in (("equal", "Equal"), ("mujoco_falls", "Falls"), ("wheel_sensitive",
     m(f"intWhe{p}", r.wheels_gain, "{:+.3f}"); m(f"intLeg{p}", r.legs_gain, "{:+.3f}")
     m(f"intDiff{p}", r.mean_diff, "{:+.3f}"); m(f"intLo{p}", r.ci_lo, "{:+.3f}"); m(f"intHi{p}", r.ci_hi, "{:+.3f}")
 
+for cfg, p_ in (("point_foot", "Leg"), ("wheel_legged", "Whe")):
+    for (sc_tab, name_), q in (((e6, "equal"), "Cc"),):
+        m(f"courseGain{p_}", get(sc_tab[(sc_tab.scenario == name_) & (sc_tab.config == cfg) & (sc_tab.metric == "p_survive")], a="M2", b="M1").mean_diff, "{:+.3f}")
+        m(f"courseThree{p_}", get(sc_tab[(sc_tab.scenario == name_) & (sc_tab.config == cfg) & (sc_tab.metric == "p_survive")], a="M3", b="M2").mean_diff, "{:+.3f}")
+s3 = pd.read_csv(T / "E3_summary.csv")
+for lv, q in ((0.25, "Low"), (4.0, "High")):
+    m(f"psScale{q}", get(s3, factor="hazard_scale", level=lv, method="M0").p_survive)
 e3 = pd.read_csv(T / "E3_compare.csv"); e3 = e3[e3.metric == "p_survive"]
+r = get(e3, factor="believed_eps", level=0.02, a="M3", b="M2"); m("believedLow", r.mean_diff, "{:+.3f}")
+r = get(e3, factor="believed_eps", level=0.3, a="M3", b="M2"); m("believedHigh", r.mean_diff, "{:+.3f}")
+r = get(e3, factor="window_m", level=2.0, a="M2", b="M1"); m("windowLong", r.mean_diff, "{:+.3f}")
+r = get(e3, factor="window_m", level=0.5, a="M2", b="M1"); m("windowShort", r.mean_diff, "{:+.3f}")
 r = get(e3, factor="aliasing", level=0.5, a="M2", b="M1"); m("aliasHigh", r.mean_diff, "{:+.3f}"); m("aliasHighLo", r.ci_lo, "{:+.3f}"); m("aliasHighHi", r.ci_hi, "{:+.3f}")
 r = get(e3, factor="aliasing", level=0.0, a="M2", b="M1"); m("aliasZero", r.mean_diff, "{:+.3f}")
 r = get(e3, factor="appearance_noise", level=0.5, a="M2", b="M1"); m("noiseHigh", r.mean_diff, "{:+.3f}"); m("noiseHighLo", r.ci_lo, "{:+.3f}"); m("noiseHighHi", r.ci_hi, "{:+.3f}")

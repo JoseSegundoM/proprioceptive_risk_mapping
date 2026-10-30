@@ -55,6 +55,35 @@ def shoot(variant, cls, instance, name, t_end=None, until_fall=False):
     return dict(name=name, variant=variant, cls=cls, instance=instance, seed=e["seed"], mu=p.mu, relief_m=p.relief_m, solref_time=p.solref_time, sim_time_s=float(data.time), fell=fell)
 
 
+def portrait(variant, name):
+    """Both configurations standing on a plain floor, for the opening figure."""
+    _single_thread_ort()
+    from locomotion import Locomotion, Mode, PHYSICS_DT
+    from wheels import WheelLocomotion
+    from src.physics.terrains import TerrainParams
+    p = TerrainParams("nominal", 0.9, 0.02, 1.0, 0.8, 0.0, 0.3, 1)
+    model = build([(p, 24.0)], variant)
+    model.geom("floor0").rgba = [0.62, 0.62, 0.62, 1]
+    model.vis.global_.offwidth, model.vis.global_.offheight = 1400, 1000
+    model.vis.quality.shadowsize = 8192
+    model.vis.map.shadowclip = 0.6
+    model.light_castshadow[:] = 1
+    data = mujoco.MjData(model)
+    loco = Locomotion(model, data) if variant == "point_foot" else WheelLocomotion(model, data)
+    loco._mj = _Substeps(mujoco, 5, loco if variant == "wheel_legged" else None)
+    model.opt.timestep = PHYSICS_DT / 5
+    while loco.mode == Mode.STANDUP:
+        loco.step()
+    for _ in range(200):
+        loco.step()
+    cam = mujoco.MjvCamera()
+    cam.lookat[:] = [data.qpos[0], data.qpos[1], 0.27]
+    cam.distance, cam.azimuth, cam.elevation = 1.45, 140, -14
+    with mujoco.Renderer(model, 1000, 1400) as r:
+        r.update_scene(data, cam)
+        Image.fromarray(r.render()).save(OUT / f"{name}.png")
+
+
 if __name__ == "__main__":
     import pandas as pd
     d = pd.read_csv(ROOT / "data" / "processed" / "episodes_campaign.csv")
@@ -65,3 +94,5 @@ if __name__ == "__main__":
             shoot("wheel_legged", "granular", 0, "wheeled_granular", t_end=6.0)]
     json.dump(rows, open(OUT / "renders.json", "w"), indent=1)
     print(rows)
+    portrait("point_foot", "portrait_legged")
+    portrait("wheel_legged", "portrait_wheeled")

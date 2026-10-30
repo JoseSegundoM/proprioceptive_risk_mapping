@@ -68,7 +68,7 @@ def fig_architecture():
 def fig_configurations():
     d = pd.read_csv(ROOT / "results" / "classifier" / "failure_rates_mujoco.csv")
     d = d[d.cls.isin(maps.CLASSES)]
-    fig, axs = plt.subplots(1, 4, figsize=(TWO, 1.3), constrained_layout=True)
+    fig, axs = plt.subplots(1, 4, figsize=(TWO, 1.12), constrained_layout=True)
     panels = [("mean_slip", "Contact slip (m/s)"), ("speed_tracking", "Speed / command (-)"), ("h_mean", "Falls per metre (1/m)"), ("acc_std", "Accel. std (m/s$^2$)")]
     x = np.arange(4)
     for ax, (col, lab) in zip(axs, panels):
@@ -81,6 +81,20 @@ def fig_configurations():
     h, l = axs[0].get_legend_handles_labels()
     fig.legend(h, l, loc="lower center", bbox_to_anchor=(0.5, 0.98), ncol=2)
     save(fig, "fig2_configurations")
+
+
+def fig_quadrupeds():
+    """Real offscreen renders of the two simulation models. No photographs."""
+    from PIL import Image
+    fig, axs = plt.subplots(1, 2, figsize=(ONE, 1.28))
+    for ax, (n, title) in zip(axs, (("portrait_legged", "(a) Legged"), ("portrait_wheeled", "(b) Wheeled"))):
+        im = np.asarray(Image.open(F / "mujoco" / f"{n}.png").convert("RGB"))
+        ax.imshow(im[170:], interpolation="none", aspect="auto")
+        ax.set_title(title, fontsize=7.5, pad=2); ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
+        for sp in ax.spines.values():
+            sp.set_visible(False)
+    fig.subplots_adjust(left=0.003, right=0.997, top=0.91, bottom=0.005, wspace=0.03)
+    save(fig, "fig0_quadrupeds")
 
 
 def fig_mujoco():
@@ -98,7 +112,7 @@ def fig_mujoco():
         g = d[(d.variant == variant) & (d.cls == cls) & (d.kind == "homogeneous") & (d.duration_s >= 5.5)].sort_values("instance").iloc[0]
         return np.load(raw / f"{g.episode}.npz")
 
-    fig = plt.figure(figsize=(TWO, 2.3))
+    fig = plt.figure(figsize=(TWO, 2.05))
     gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 0.82], left=0.05, right=0.995, top=0.945, bottom=0.2, wspace=0.26, hspace=0.27)
     shots = [("legged_rough", "(a) Legged, rough"), ("legged_low_friction_fall", "(b) Legged, low friction: fall"), ("wheeled_rough", "(c) Wheeled, rough"), ("wheeled_granular", "(d) Wheeled, granular-like")]
     for i, (n, title) in enumerate(shots):
@@ -235,7 +249,7 @@ def fig_confusion():
 def fig_sensitivity():
     c = pd.read_csv(T / "E3_compare.csv")
     ab = pd.read_csv(T / "E4_compare.csv"); ab = ab[ab.metric == "p_survive"]
-    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.9), gridspec_kw=dict(width_ratios=[2.0, 1]))
+    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.68), gridspec_kw=dict(width_ratios=[2.0, 1]))
     ax = axs[0]
     names = {"aliasing": "aliased share", "appearance_noise": "appearance noise", "hazard_scale": "true hazard $\\times$", "believed_hazard": "believed hazard $\\times$",
              "lambda": "$\\lambda$", "hazard_fraction": "hazard coverage", "believed_eps": "believed $\\varepsilon$", "window_m": "window (m)"}
@@ -276,7 +290,7 @@ def fig_sensitivity():
 def fig_scenarios():
     e2 = pd.read_csv(T / "E2_summary.csv")
     sc = [("equal", "Equal hazard (assumed)"), ("wheel_sensitive", "Wheel-sensitive (assumed)"), ("mujoco_falls", "Falls per metre (MuJoCo)")]
-    fig, axs = plt.subplots(1, 3, figsize=(TWO, 1.45), sharey=True)
+    fig, axs = plt.subplots(1, 3, figsize=(TWO, 1.2), sharey=True)
     order = ["M0", "M1", "M2", "M3", "ORACLE"]
     for ax, (k, title) in zip(axs, sc):
         for i, v in enumerate(CFG):
@@ -294,6 +308,6 @@ def fig_scenarios():
 
 
 if __name__ == "__main__":
-    fig_architecture(); fig_mujoco(); fig_configurations(); fig_scenarios(); fig_performance(); fig_robustness(); fig_confusion(); fig_sensitivity()
+    fig_architecture(); fig_quadrupeds(); fig_mujoco(); fig_configurations(); fig_scenarios(); fig_performance(); fig_robustness(); fig_confusion(); fig_sensitivity()
     fig_maps(int(sys.argv[1]) if len(sys.argv) > 1 else 12)
     print(sorted(p.name for p in F.glob("*.pdf")))

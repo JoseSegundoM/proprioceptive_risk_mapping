@@ -11,7 +11,7 @@ def check(ok, msg):
         fail.append(msg)
 pdf = pypdf.PdfReader(P / "paper_final.pdf")
 check(4 <= len(pdf.pages) <= 6, f"page count {len(pdf.pages)} within 4-6")
-for extra in ("paper_ieee_candidate", "paper_epic_margins"):
+for extra in ("paper_ieee_candidate",):
     check(4 <= len(pypdf.PdfReader(P / f"{extra}.pdf").pages) <= 6, f"{extra} within 4-6 pages")
 b = pdf.pages[0].mediabox; check(abs(float(b.width) - 595.3) < 1 and abs(float(b.height) - 841.9) < 1, "A4 page size")
 log = (P / "paper_final.log").read_text(errors="ignore")
