@@ -50,8 +50,8 @@
  "hashes": {
   "data/processed/episodes_campaign.csv": "46c39d51d6094a883a16ffd7c66528bf7b995e8b06738b4e06fe9b0e55f820ae",
   "data/processed/episodes_pilot.csv": "33911df0c6a1cbb89602c74c7e8dc7ec1a664db58502a0ff8552822093823bb1",
-  "paper/main.tex": "3958d2f3727f8d9523406e9efbaa016e02b6314f258e5c5a5d86e312bb6e5d08",
-  "paper/paper_final.pdf": "5e34f292d4c3aedca1f8b0d6d6a23acd4f4db8fdce2737c5dbc8a4d482847e9a",
+  "paper/main.tex": "3482b6847746a7d571b467d9329c1942e83d7775004c3017a4333d2fdb1d23be",
+  "paper/paper_final.pdf": "7d3a1f1cd6c8cc536d81103283b27e6b56c15af283545ccb05570f132c1e143e",
   "paper/references.bib": "e886489062a011578b1b38f21d3021ed506fc9474b11bf130dd365d585d96d24",
   "paper/tables/values.tex": "469f0ed555f33e0f4646506d7ec9baa7042d98d370f32acad89c7946c667bf82",
   "results/classifier/classifier_metrics.csv": "1ee8d00678d7e3bbca10ca211d2b93bcff43bd684805e0d5750473934a40e359",

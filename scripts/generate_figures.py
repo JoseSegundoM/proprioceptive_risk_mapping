@@ -249,7 +249,7 @@ def fig_confusion():
 def fig_sensitivity():
     c = pd.read_csv(T / "E3_compare.csv")
     ab = pd.read_csv(T / "E4_compare.csv"); ab = ab[ab.metric == "p_survive"]
-    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.42), gridspec_kw=dict(width_ratios=[2.0, 1]))
+    fig, axs = plt.subplots(1, 2, figsize=(TWO, 2.62), gridspec_kw=dict(width_ratios=[2.0, 1]))
     ax = axs[0]
     names = {"aliasing": "aliased share", "appearance_noise": "appearance noise", "hazard_scale": "true hazard $\\times$", "believed_hazard": "believed hazard $\\times$",
              "lambda": "$\\lambda$", "hazard_fraction": "hazard coverage", "believed_eps": "believed $\\varepsilon$", "window_m": "window (m)"}
