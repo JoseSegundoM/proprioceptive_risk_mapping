@@ -1,0 +1,16 @@
+Proprioceptive Risk Mapping
+Copyright (c) 2026 Jose Luis Segundo Manayay, Javier Yanpier Garay Yovera, Francisco Jesús Rodríguez Huiman
+
+Original code and data in this repository are released under the MIT License (see LICENSE).
+
+Third-party components:
+
+  paper/IEEEtran.cls, IEEEtran.bst, IEEEtran_doi.bst   IEEE, LaTeX Project Public License;
+                                                       IEEEtran_doi.bst is a modified copy
+  MuJoCo, NumPy, SciPy, pandas, scikit-learn, Matplotlib, onnxruntime
+                                                       installed from requirements.txt, own licences
+
+Robot models and the legged walking policy are not redistributed here. Regenerating the MuJoCo
+signals needs them from the separate project repository mine_sentinel_autonomy, which builds on
+the Dobot Quad SDK (MIT, Dobot Robotics Co., Ltd.). The renders and recorded signals in this
+repository were produced from those models.

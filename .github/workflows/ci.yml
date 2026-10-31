@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependencies
+        run: pip install -r requirements.txt
+      - name: Tests
+        run: python -m pytest tests -q
+      - name: Statistics and tables regenerate from the mission records
+        run: |
+          python scripts/analyze_mc.py > /dev/null
+          python scripts/make_tables.py
+          git diff --stat --exit-code results/tables paper/tables

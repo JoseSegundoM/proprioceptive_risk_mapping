@@ -44,8 +44,7 @@
   "bootstrap": 0
  },
  "commands": [
-  "scripts/reproduce_all.sh",
-  "scripts/run_gazebo_gates.sh"
+  "scripts/reproduce_all.sh"
  ],
  "hashes": {
   "data/processed/episodes_campaign.csv": "46c39d51d6094a883a16ffd7c66528bf7b995e8b06738b4e06fe9b0e55f820ae",

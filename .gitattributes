@@ -1,0 +1,10 @@
+* text=auto
+*.pdf binary
+*.png binary
+*.npz binary
+*.gz binary
+*.joblib binary
+paper/IEEEtran.cls linguist-vendored
+paper/IEEEtran.bst linguist-vendored
+paper/IEEEtran_doi.bst linguist-vendored
+paper/figures/** linguist-generated

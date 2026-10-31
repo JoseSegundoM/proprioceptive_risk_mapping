@@ -38,33 +38,6 @@ def save(fig, name):
     plt.close(fig)
 
 
-def fig_architecture():
-    fig, ax = plt.subplots(figsize=(TWO, 1.6))
-    ax.set_axis_off(); ax.set_xlim(0, 100); ax.set_ylim(0, 27)
-
-    def box(x, y, w, h, text, fc="#FFFFFF", ec="#333333", ls="-"):
-        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle="round,pad=0.15,rounding_size=0.6", fc=fc, ec=ec, lw=0.7, ls=ls))
-        ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=6.6)
-
-    def arrow(a, b, ls="-"):
-        ax.annotate("", xy=b, xytext=a, arrowprops=dict(arrowstyle="-|>", lw=0.7, color="#333333", ls=ls, shrinkA=0, shrinkB=0, mutation_scale=6))
-    new = "#E3F1EC"
-    box(0.5, 19, 21, 7.5, "Dynamic simulation (MuJoCo)\nfixed legged or wheeled robot,\nparametrised terrain contact")
-    box(0.5, 10, 21, 7, "Proprioception: IMU, joint\nposition and velocity,\ncommanded torque")
-    box(0.5, 1, 21, 7, "Exteroception (assumed input):\ngeometry, roughness,\nappearance features")
-    box(26, 10, 17, 7, "Terrain classifier\nwindow features,\nrandom forest", fc=new)
-    box(26, 19, 17, 7.5, "Held-out confusion\nobservation model\n$p(o\\mid t,b)$", fc=new)
-    box(48, 5.5, 20, 16, "Risk map\nbelief $b_i(t)$ per cell\nM0 geometry prior\nM1 local Bayes\nM2 appearance vote\nM3 tempered fusion", fc=new)
-    box(73, 15, 26, 7, "Risk-aware A*, replanning\ncost rate: $1+\\lambda\\,\\bar h_i$", fc=new)
-    box(73, 5, 26, 7, "Monte Carlo mission:\ntrue hazard accumulates, never\nvisible to the methods", fc="#F5F5F5", ls="--")
-    arrow((11, 19), (11, 17)); arrow((21.5, 13.5), (26, 13.5)); arrow((34.5, 17), (34.5, 19)); arrow((43, 22.5), (48, 18))
-    arrow((43, 13.5), (48, 13.5)); arrow((21.5, 4.5), (48, 8)); arrow((68, 16), (73, 18)); arrow((86, 15), (86, 12))
-    ax.annotate("", xy=(58, 5.5), xytext=(73, 7), arrowprops=dict(arrowstyle="-|>", lw=0.7, color="#333333", ls=(0, (3, 2)), mutation_scale=6, connectionstyle="arc3,rad=-0.25"))
-    ax.text(65, 1.8, "new windows, replan", fontsize=6, ha="center", color="#333333")
-    ax.legend(handles=[Patch(fc=new, ec="#333333", lw=0.6, label="Implemented in this work")], loc="upper center", bbox_to_anchor=(0.73, 1.03), fontsize=6.5)
-    save(fig, "fig1_architecture")
-
-
 def fig_configurations():
     d = pd.read_csv(ROOT / "results" / "classifier" / "failure_rates_mujoco.csv")
     d = d[d.cls.isin(maps.CLASSES)]

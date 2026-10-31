@@ -1,19 +1,33 @@
 cff-version: 1.2.0
 message: If you use this software or its results, please cite it as below.
 type: software
-title: Proprioception-augmented risk mapping for a commercial quadruped
+title: "Proprioceptive Risk Mapping: terrain-aware navigation across legged and wheeled configurations"
+version: 0.1.0
+date-released: "2026-10-30"
 authors:
   - given-names: Jose Luis
     family-names: Segundo Manayay
+    email: jose.segundo.m@uni.pe
     orcid: https://orcid.org/0009-0002-9203-8710
     affiliation: Universidad Nacional de Ingeniería
   - given-names: Javier Yanpier
     family-names: Garay Yovera
+    email: javier.garay.y@uni.pe
     orcid: https://orcid.org/0009-0001-1645-8724
     affiliation: Universidad Nacional de Ingeniería
   - given-names: Francisco Jesús
     family-names: Rodríguez Huiman
+    email: francisco.rodriguez.h@uni.pe
     orcid: https://orcid.org/0009-0006-6972-2484
     affiliation: Universidad Nacional de Ingeniería
 repository-code: https://github.com/JoseSegundoM/proprioceptive_risk_mapping
 license: MIT
+keywords:
+  - legged robots
+  - wheeled-legged robots
+  - proprioception
+  - terrain classification
+  - traversability
+  - risk-aware planning
+  - Monte Carlo simulation
+  - MuJoCo

@@ -17,5 +17,7 @@ python scripts/analyze_mc.py
 python scripts/make_tables.py
 python scripts/render_mujoco.py
 python scripts/generate_figures.py 12
+python scripts/make_banner.py
+scripts/make_assets.sh
 scripts/build_paper.sh
 python scripts/verify_deliverables.py

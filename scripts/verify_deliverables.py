@@ -61,6 +61,10 @@ for quote, key in (("0.055", "dTwoOne"), ("0.015", "dThreeTwo"), ("0.935", "fHel
 check("0.45 " in ab and v["speedLegMin"].startswith("0.45"), f"abstract 0.45 equals speedLegMin={v['speedLegMin']}")
 used = set(re.findall(r"\\v([A-Za-z]+)\{\}", tex))
 check(used <= set(v), f"all {len(used)} text macros come from results")
+for readme in ("README.md", "README.es.md"):
+    text_ = (R / readme).read_text()
+    missing = [k for k in ("psMz", "psMo", "psMt", "psMh", "psOrc", "expMz", "expMo", "expMt", "expMh", "dOneZero", "dOneZeroLo", "dOneZeroHi", "dTwoOne", "dTwoOneLo", "dTwoOneHi", "dThreeTwo", "dThreeTwoLo", "dThreeTwoHi", "repOneZero", "repTwoOne", "repThreeTwo", "intDiffEqual", "intLegFalls", "intWheFalls", "fHeldLeg", "fHeldWhe", "fCourseLeg", "fCourseWhe", "speedLegMin") if v[k] not in text_]
+    check(not missing, f"{readme}: quoted numbers match the results {missing}")
 for f in re.findall(r"includegraphics\[[^\]]*\]\{([^}]+)\}", tex):
     check((P / f).exists(), f"figure {f}")
 ver = json.load(open(P / "references_verified.json"))
