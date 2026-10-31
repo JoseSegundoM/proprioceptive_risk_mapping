@@ -1,0 +1,6 @@
+{
+ "kernel_sigma": 0.5,
+ "tempering": 0.6,
+ "uncertainty_kappa": 1.0,
+ "vote_threshold": 0.5
+}

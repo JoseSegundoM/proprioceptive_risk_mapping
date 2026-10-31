@@ -1,0 +1,33 @@
+variant,model,with_cmd,shift,f1_macro,accuracy,brier,n_test
+point_foot,forest,True,"speed: train <0.65, test >=0.65",0.4498308138033792,0.4493295915185532,0.6977452049881085,3207
+point_foot,forest,True,"speed: train >=0.65, test <0.65",0.5838774877913303,0.616538846282094,0.4964302398194773,2999
+point_foot,forest,True,"terrain parameter: train lower half, test upper",0.7447665063325752,0.7333990795529257,0.38881911524670326,3042
+point_foot,forest,True,"terrain parameter: train upper half, test lower",0.6964379162112907,0.7288242730720607,0.36546046013049693,3164
+point_foot,logistic,True,"speed: train <0.65, test >=0.65",0.6579905516995633,0.6111630807608357,0.7017165098104134,3207
+point_foot,logistic,True,"speed: train >=0.65, test <0.65",0.7892717072734237,0.788596198732911,0.34271627381301173,2999
+point_foot,logistic,True,"terrain parameter: train lower half, test upper",0.7992685175457837,0.7843523997370151,0.3283510434309074,3042
+point_foot,logistic,True,"terrain parameter: train upper half, test lower",0.7677689061678257,0.7515802781289507,0.41032487148961777,3164
+point_foot,forest,False,"speed: train <0.65, test >=0.65",0.45329815135285223,0.45213595260367945,0.6781620201477916,3207
+point_foot,forest,False,"speed: train >=0.65, test <0.65",0.5392229216989991,0.5658552850950317,0.5230278250063435,2999
+point_foot,forest,False,"terrain parameter: train lower half, test upper",0.7399875171644834,0.7324128862590401,0.3942792269662666,3042
+point_foot,forest,False,"terrain parameter: train upper half, test lower",0.6954493988513076,0.7266118836915297,0.3630365263027601,3164
+point_foot,logistic,False,"speed: train <0.65, test >=0.65",0.6781712082763698,0.633613969441846,0.6430052095467359,3207
+point_foot,logistic,False,"speed: train >=0.65, test <0.65",0.7630429505405858,0.7652550850283428,0.3923629717338153,2999
+point_foot,logistic,False,"terrain parameter: train lower half, test upper",0.8015769174065175,0.7876397107166337,0.3278606994229041,3042
+point_foot,logistic,False,"terrain parameter: train upper half, test lower",0.7601548316866098,0.7433628318584071,0.42480808353823996,3164
+wheel_legged,forest,True,"speed: train <0.65, test >=0.65",0.9934891291692194,0.9935683046050939,0.03774285883973549,3887
+wheel_legged,forest,True,"speed: train >=0.65, test <0.65",0.9633043779988185,0.9649884998722208,0.07783535261900763,3913
+wheel_legged,forest,True,"terrain parameter: train lower half, test upper",0.9353648065916136,0.9364102564102564,0.10170602660081464,3900
+wheel_legged,forest,True,"terrain parameter: train upper half, test lower",0.9635092652948649,0.963076923076923,0.0909369247023212,3900
+wheel_legged,logistic,True,"speed: train <0.65, test >=0.65",0.9833903703785865,0.9835348597890404,0.02544156803885017,3887
+wheel_legged,logistic,True,"speed: train >=0.65, test <0.65",0.9868749548685283,0.9867109634551495,0.02127842646714556,3913
+wheel_legged,logistic,True,"terrain parameter: train lower half, test upper",0.9641907236778836,0.9643589743589743,0.061611408215130954,3900
+wheel_legged,logistic,True,"terrain parameter: train upper half, test lower",0.9493317381907345,0.9482051282051283,0.07608466246199744,3900
+wheel_legged,forest,False,"speed: train <0.65, test >=0.65",0.9936966079987208,0.9938255724208902,0.03950678260177511,3887
+wheel_legged,forest,False,"speed: train >=0.65, test <0.65",0.9631574691546095,0.9647329414771275,0.07154017038220256,3913
+wheel_legged,forest,False,"terrain parameter: train lower half, test upper",0.9383574186363499,0.9392307692307692,0.0955171418115574,3900
+wheel_legged,forest,False,"terrain parameter: train upper half, test lower",0.9537003561753065,0.953076923076923,0.09404562167796333,3900
+wheel_legged,logistic,False,"speed: train <0.65, test >=0.65",0.9844469675947776,0.9845639310522254,0.024191526047225353,3887
+wheel_legged,logistic,False,"speed: train >=0.65, test <0.65",0.990911587708337,0.990799897776642,0.014708334693893356,3913
+wheel_legged,logistic,False,"terrain parameter: train lower half, test upper",0.9636656607180911,0.9638461538461538,0.06343067041182611,3900
+wheel_legged,logistic,False,"terrain parameter: train upper half, test lower",0.9488180063373545,0.9476923076923077,0.07572573208874263,3900

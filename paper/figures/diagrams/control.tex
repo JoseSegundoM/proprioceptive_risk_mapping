@@ -1,0 +1,38 @@
+% Control structure: inner loop in MuJoCo, outer loop in the Monte Carlo, joined offline.
+\begin{tikzpicture}[font=\scriptsize,>={Latex[length=1.5mm]},line width=0.45pt,
+  block/.style={draw,rounded corners=0.8pt,align=center,minimum height=8.5mm,inner sep=1.5pt,fill=white},
+  sum/.style={draw,circle,inner sep=0,minimum size=3.2mm,fill=white},
+  sig/.style={font=\tiny,inner sep=0.8pt}]
+\fill[black!4,draw=black!50,dashed,rounded corners=2pt] (2.0,0.72) rectangle (9.3,3.0);
+\node[font=\tiny\bfseries,anchor=north east,inner sep=1pt] at (9.22,2.95) {Inner loop: MuJoCo};
+% outer, top row
+\node[block,fill=greenfill,text width=15mm] (risk) at (0.75,3.95) {Risk map\\$\bar h_i,\ \sigma_i$};
+\node[block,fill=greenfill,text width=15mm] (astar) at (3.25,3.95) {A* planner\\min $J$};
+\draw[->] (risk) -- node[sig,above] {cost} (astar);
+\node[font=\tiny,align=left,anchor=west,inner sep=0pt] at (4.2,3.95) {\textbf{Outer loop: Monte Carlo}\\through the belief update;\\the dashed link is offline};
+% inner, middle row
+\node[block,text width=15mm] (ctl) at (3.25,1.95) {Locomotion\\policy, 50\,Hz\\or skid-steer};
+\node[sum] (s) at (5.0,1.95) {};
+\node[block,text width=9mm] (pd) at (6.05,1.95) {Joint\\PD};
+\node[block,text width=13mm] (rob) at (7.9,1.95) {Robot and\\terrain\\contact};
+\draw[->] (astar) -- node[sig,right,pos=0.28,align=left] {$v_x,\omega_z$} (ctl);
+\draw[->] (ctl) -- node[sig,above] {$q_d$} (s);
+\draw[->] (s) -- (pd);
+\draw[->] (pd) -- node[sig,above] {$\tau$} (rob);
+\coordinate (out) at (9.0,1.95);
+\draw (rob) -- (out);
+\node[sig,above] at (8.9,1.97) {$y$};
+% feedback
+\draw[->] (out) -- (9.0,1.02) -- (5.0,1.02) -- (s.south);
+\node[sig,anchor=east] at (4.92,1.5) {$-$};
+\node[sig,above] at (7.0,1.02) {$q,\dot q$};
+\draw[->] (5.0,1.02) -- (3.25,1.02) -- (ctl.south);
+\node[sig,above] at (4.15,1.02) {$q,\dot q$, IMU};
+\fill (5.0,1.02) circle (0.5pt);
+% outer, bottom row
+\node[block,fill=greenfill,text width=16mm] (clf) at (7.9,0.0) {Features and\\classifier};
+\node[block,fill=greenfill,text width=15mm] (bel) at (0.75,0.0) {Belief update\\M0--M3};
+\draw[->,dashed] (9.0,1.02) -- (9.0,0.0) -- (clf.east);
+\draw[->] (clf) -- node[sig,above] {class $o$, confidence $c$} (bel);
+\draw[->] (bel) -- node[sig,right,align=left] {$b_i(t)$} (risk);
+\end{tikzpicture}

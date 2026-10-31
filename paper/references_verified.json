@@ -1,0 +1,459 @@
+{
+ "bjelonic2019": {
+  "status": "crossref",
+  "title": "Keep Rollin’—Whole-Body Motion Control and Planning for Wheeled Quadrupedal Robots",
+  "authors": [
+   "Marko Bjelonic",
+   "C. Dario Bellicoso",
+   "Yvain de Viragh",
+   "Dhionis Sako",
+   "F. Dante Tresoldi",
+   "Fabian Jenelten",
+   "Marco Hutter"
+  ],
+  "first_family": "Bjelonic",
+  "venue": "IEEE Robotics and Automation Letters",
+  "volume": "4",
+  "issue": "2",
+  "page": "2116-2123",
+  "year": 2019,
+  "doi": "10.1109/lra.2019.2899750",
+  "type": "journal-article"
+ },
+ "lee2024": {
+  "status": "crossref",
+  "title": "Learning robust autonomous navigation and locomotion for wheeled-legged robots",
+  "authors": [
+   "Joonho Lee",
+   "Marko Bjelonic",
+   "Alexander Reske",
+   "Lorenz Wellhausen",
+   "Takahiro Miki",
+   "Marco Hutter"
+  ],
+  "first_family": "Lee",
+  "venue": "Science Robotics",
+  "volume": "9",
+  "issue": "89",
+  "page": null,
+  "year": 2024,
+  "doi": "10.1126/scirobotics.adi9641",
+  "type": "journal-article"
+ },
+ "mattamala2025": {
+  "status": "crossref",
+  "title": "Wild visual navigation: fast traversability learning via pre-trained models and online self-supervision",
+  "authors": [
+   "Matias Mattamala",
+   "Jonas Frey",
+   "Piotr Libera",
+   "Nived Chebrolu",
+   "Georg Martius",
+   "Cesar Cadena",
+   "Marco Hutter",
+   "Maurice Fallon"
+  ],
+  "first_family": "Mattamala",
+  "venue": "Autonomous Robots",
+  "volume": "49",
+  "issue": "3",
+  "page": null,
+  "year": 2025,
+  "doi": "10.1007/s10514-025-10202-x",
+  "type": "journal-article"
+ },
+ "frey2023": {
+  "status": "crossref",
+  "title": "Fast Traversability Estimation for Wild Visual Navigation",
+  "authors": [
+   "Jonas Frey",
+   "Matias Mattamala",
+   "Nived Chebrolu",
+   "Cesar Cadena",
+   "Maurice Fallon",
+   "Marco Hutter"
+  ],
+  "first_family": "Frey",
+  "venue": "Robotics: Science and Systems XIX",
+  "volume": null,
+  "issue": null,
+  "page": null,
+  "year": 2023,
+  "doi": "10.15607/rss.2023.xix.054",
+  "type": "proceedings-article"
+ },
+ "wellhausen2019": {
+  "status": "crossref",
+  "title": "Where Should I Walk? Predicting Terrain Properties From Images Via Self-Supervised Learning",
+  "authors": [
+   "Lorenz Wellhausen",
+   "Alexey Dosovitskiy",
+   "Rene Ranftl",
+   "Krzysztof Walas",
+   "Cesar Cadena",
+   "Marco Hutter"
+  ],
+  "first_family": "Wellhausen",
+  "venue": "IEEE Robotics and Automation Letters",
+  "volume": "4",
+  "issue": "2",
+  "page": "1509-1516",
+  "year": 2019,
+  "doi": "10.1109/lra.2019.2895390",
+  "type": "journal-article"
+ },
+ "bednarek2019": {
+  "status": "crossref",
+  "title": "What am I touching? Learning to classify terrain via haptic sensing",
+  "authors": [
+   "Jakub Bednarek",
+   "Michal Bednarek",
+   "Lorenz Wellhausen",
+   "Marco Hutter",
+   "Krzysztof Walas"
+  ],
+  "first_family": "Bednarek",
+  "venue": "2019 International Conference on Robotics and Automation (ICRA)",
+  "volume": null,
+  "issue": null,
+  "page": "7187-7193",
+  "year": 2019,
+  "doi": "10.1109/icra.2019.8794478",
+  "type": "proceedings-article"
+ },
+ "kolvenbach2019": {
+  "status": "crossref",
+  "title": "Haptic Inspection of Planetary Soils With Legged Robots",
+  "authors": [
+   "Hendrik Kolvenbach",
+   "Christian Bartschi",
+   "Lorenz Wellhausen",
+   "Ruben Grandia",
+   "Marco Hutter"
+  ],
+  "venue": "IEEE Robotics and Automation Letters",
+  "volume": "4",
+  "issue": "2",
+  "page": "1626-1632",
+  "year": 2019,
+  "doi": "10.1109/lra.2019.2896732",
+  "type": "journal-article"
+ },
+ "fahmi2020": {
+  "status": "crossref",
+  "title": "STANCE: Locomotion Adaptation Over Soft Terrain",
+  "authors": [
+   "Shamel Fahmi",
+   "Michele Focchi",
+   "Andreea Radulescu",
+   "Geoff Fink",
+   "Victor Barasuol",
+   "Claudio Semini"
+  ],
+  "first_family": "Fahmi",
+  "venue": "IEEE Transactions on Robotics",
+  "volume": "36",
+  "issue": "2",
+  "page": "443-457",
+  "year": 2020,
+  "doi": "10.1109/tro.2019.2954670",
+  "type": "journal-article"
+ },
+ "cai2024": {
+  "status": "crossref",
+  "title": "EVORA: Deep Evidential Traversability Learning for Risk-Aware Off-Road Autonomy",
+  "authors": [
+   "Xiaoyi Cai",
+   "Siddharth Ancha",
+   "Lakshay Sharma",
+   "Philip R. Osteen",
+   "Bernadette Bucher",
+   "Stephen Phillips",
+   "Jiuguang Wang",
+   "Michael Everett",
+   "Nicholas Roy",
+   "Jonathan P. How"
+  ],
+  "first_family": "Cai",
+  "venue": "IEEE Transactions on Robotics",
+  "volume": "40",
+  "issue": null,
+  "page": "3756-3777",
+  "year": 2024,
+  "doi": "10.1109/tro.2024.3431828",
+  "type": "journal-article"
+ },
+ "fan2021": {
+  "status": "crossref",
+  "title": "STEP: Stochastic Traversability Evaluation and Planning for Risk-Aware Off-road Navigation",
+  "authors": [
+   "David Fan*",
+   "Kyohei Otsu*",
+   "Yuki Kubo",
+   "Anushri Dixit",
+   "Joel Burdick",
+   "Ali-akbar Agha-mohammadi"
+  ],
+  "first_family": "Fan*",
+  "venue": "Robotics: Science and Systems XVII",
+  "volume": null,
+  "issue": null,
+  "page": null,
+  "year": 2021,
+  "doi": "10.15607/rss.2021.xvii.021",
+  "type": "proceedings-article"
+ },
+ "cai2022": {
+  "status": "crossref",
+  "title": "Risk-Aware Off-Road Navigation via a Learned Speed Distribution Map",
+  "authors": [
+   "Xiaoyi Cai",
+   "Michael Everett",
+   "Jonathan Fink",
+   "Jonathan P. How"
+  ],
+  "first_family": "Cai",
+  "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+  "volume": null,
+  "issue": null,
+  "page": "2931-2937",
+  "year": 2022,
+  "doi": "10.1109/iros47612.2022.9982200",
+  "type": "proceedings-article"
+ },
+ "ewen2022": {
+  "status": "crossref",
+  "title": "These Maps are Made for Walking: Real-Time Terrain Property Estimation for Mobile Robots",
+  "authors": [
+   "Parker Ewen",
+   "Adam Li",
+   "Yuxin Chen",
+   "Steven Hong",
+   "Ram Vasudevan"
+  ],
+  "first_family": "Ewen",
+  "venue": "IEEE Robotics and Automation Letters",
+  "volume": "7",
+  "issue": "3",
+  "page": "7083-7090",
+  "year": 2022,
+  "doi": "10.1109/lra.2022.3180439",
+  "type": "journal-article"
+ },
+ "elnoor2024": {
+  "status": "crossref",
+  "title": "ProNav: Proprioceptive Traversability Estimation for Legged Robot Navigation in Outdoor Environments",
+  "authors": [
+   "Mohamed Elnoor",
+   "Adarsh Jagan Sathyamoorthy",
+   "Kasun Weerakoon",
+   "Dinesh Manocha"
+  ],
+  "venue": "IEEE Robotics and Automation Letters",
+  "volume": "9",
+  "issue": "8",
+  "page": "7190-7197",
+  "year": 2024,
+  "doi": "10.1109/lra.2024.3418270",
+  "type": "journal-article"
+ },
+ "hart1968": {
+  "status": "crossref",
+  "title": "A Formal Basis for the Heuristic Determination of Minimum Cost Paths",
+  "authors": [
+   "Peter Hart",
+   "Nils Nilsson",
+   "Bertram Raphael"
+  ],
+  "first_family": "Hart",
+  "venue": "IEEE Transactions on Systems Science and Cybernetics",
+  "volume": "4",
+  "issue": "2",
+  "page": "100-107",
+  "year": 1968,
+  "doi": "10.1109/tssc.1968.300136",
+  "type": "journal-article"
+ },
+ "todorov2012": {
+  "status": "crossref",
+  "title": "MuJoCo: A physics engine for model-based control",
+  "authors": [
+   "Emanuel Todorov",
+   "Tom Erez",
+   "Yuval Tassa"
+  ],
+  "first_family": "Todorov",
+  "venue": "2012 IEEE/RSJ International Conference on Intelligent Robots and Systems",
+  "volume": null,
+  "issue": null,
+  "page": "5026-5033",
+  "year": 2012,
+  "doi": "10.1109/iros.2012.6386109",
+  "type": "proceedings-article"
+ },
+ "miki2022": {
+  "status": "crossref",
+  "title": "Learning robust perceptive locomotion for quadrupedal robots in the wild",
+  "authors": [
+   "Takahiro Miki",
+   "Joonho Lee",
+   "Jemin Hwangbo",
+   "Lorenz Wellhausen",
+   "Vladlen Koltun",
+   "Marco Hutter"
+  ],
+  "first_family": "Miki",
+  "venue": "Science Robotics",
+  "volume": "7",
+  "issue": "62",
+  "page": null,
+  "year": 2022,
+  "doi": "10.1126/scirobotics.abk2822",
+  "type": "journal-article"
+ },
+ "tranzatto2022": {
+  "status": "crossref",
+  "title": "CERBERUS in the DARPA Subterranean Challenge",
+  "authors": [
+   "Marco Tranzatto",
+   "Takahiro Miki",
+   "Mihir Dharmadhikari",
+   "Lukas Bernreiter",
+   "Mihir Kulkarni",
+   "Frank Mascarich",
+   "Olov Andersson",
+   "Shehryar Khattak",
+   "Marco Hutter",
+   "Roland Siegwart",
+   "Kostas Alexis"
+  ],
+  "first_family": "Tranzatto",
+  "venue": "Science Robotics",
+  "volume": "7",
+  "issue": "66",
+  "page": null,
+  "year": 2022,
+  "doi": "10.1126/scirobotics.abp9742",
+  "type": "journal-article"
+ },
+ "bissiri2016": {
+  "status": "crossref",
+  "title": "A General Framework for Updating Belief Distributions",
+  "authors": [
+   "P. G. Bissiri",
+   "C. C. Holmes",
+   "S. G. Walker"
+  ],
+  "first_family": "Bissiri",
+  "venue": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+  "volume": "78",
+  "issue": "5",
+  "page": "1103-1130",
+  "year": 2016,
+  "doi": "10.1111/rssb.12158",
+  "type": "journal-article"
+ },
+ "grunwald2017": {
+  "status": "crossref",
+  "title": "Inconsistency of Bayesian Inference for Misspecified Linear Models, and a Proposal for Repairing It",
+  "authors": [
+   "Peter Grünwald",
+   "Thijs van Ommen"
+  ],
+  "first_family": "Grünwald",
+  "venue": "Bayesian Analysis",
+  "volume": "12",
+  "issue": "4",
+  "page": "1069-1103",
+  "year": 2017,
+  "doi": "10.1214/17-ba1085",
+  "type": "journal-article"
+ },
+ "guo2017": {
+  "status": "not_found",
+  "query": "On Calibration of Modern Neural Networks",
+  "top": [
+   "Feature Manifold-Aware Margin for Logits Calibration in Long-Tailed Recognition",
+   "C3Net: A cross-modal collaborative calibration of features for object detection using frames and events",
+   "Region Partitioning and Prototype-Query Calibration for Few-Shot Fine-Grained Image Classification"
+  ]
+ },
+ "breiman2001": {
+  "status": "crossref",
+  "title": "Random Forests",
+  "authors": [
+   "Leo Breiman"
+  ],
+  "first_family": "Breiman",
+  "venue": "Machine Learning",
+  "volume": "45",
+  "issue": "1",
+  "page": "5-32",
+  "year": 2001,
+  "doi": "10.1023/a:1010933404324",
+  "type": "journal-article"
+ },
+ "tremblay2021": {
+  "status": "crossref",
+  "title": "Multimodal dynamics modeling for off-road autonomous vehicles",
+  "authors": [
+   "Jean-Francois Tremblay",
+   "Travis Manderson",
+   "Aurelio Noca",
+   "Gregory Dudek",
+   "David Meger"
+  ],
+  "first_family": "Tremblay",
+  "venue": "2021 IEEE International Conference on Robotics and Automation (ICRA)",
+  "volume": null,
+  "issue": null,
+  "page": "1796-1802",
+  "year": 2021,
+  "doi": "10.1109/icra48506.2021.9561910",
+  "type": "proceedings-article"
+ },
+ "zhao2023": {
+  "status": "crossref",
+  "title": "FAST-LIO2: Fast Direct LiDAR-Inertial Odometry",
+  "authors": [
+   "Wei Xu",
+   "Jiarong Lin",
+   "Dongjiao He",
+   "Fu Zhang"
+  ],
+  "first_family": "Xu",
+  "venue": "",
+  "volume": null,
+  "issue": null,
+  "page": null,
+  "year": 2024,
+  "doi": "10.2139/ssrn.4675561",
+  "type": "posted-content"
+ },
+ "gao2026": {
+  "status": "arxiv",
+  "arxiv": "2603.04470",
+  "title": "Efficient Autonomous Navigation of a Quadruped Robot in Underground Mines on Edge Hardware",
+  "authors": [
+   "Yixiang Gao",
+   "Kwame Awuah-Offei"
+  ],
+  "year": 2026
+ },
+ "khattak2025": {
+  "status": "arxiv",
+  "arxiv": "2505.06483",
+  "title": "CompSLAM: Complementary Hierarchical Multi-Modal Localization and Mapping for Robot Autonomy in Underground Environments",
+  "authors": [
+   "Shehryar Khattak",
+   "Timon Homberger",
+   "Lukas Bernreiter",
+   "Julian Nubert",
+   "Olov Andersson",
+   "Roland Siegwart",
+   "Kostas Alexis",
+   "Marco Hutter"
+  ],
+  "year": 2025
+ }
+}

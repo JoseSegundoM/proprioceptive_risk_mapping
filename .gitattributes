@@ -1,0 +1,8 @@
+* text=auto
+*.pdf binary
+*.png binary
+*.npz binary
+*.gz binary
+*.joblib binary
+paper/template/IEEEtran.* linguist-vendored
+paper/figures/** linguist-generated

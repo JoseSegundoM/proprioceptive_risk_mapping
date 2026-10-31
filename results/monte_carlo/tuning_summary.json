@@ -1,0 +1,14 @@
+{
+ "m2_best": {
+  "kernel_sigma": 0.35,
+  "vote_threshold": 0.5
+ },
+ "m2_score": 0.6456138568039994,
+ "m3_best": {
+  "kernel_sigma": 0.5,
+  "tempering": 0.6,
+  "uncertainty_kappa": 1.0
+ },
+ "m3_score": 0.6751838379976611,
+ "m2_kernel_for_eval": 0.35
+}

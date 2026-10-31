@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Build outputs
+build/
+paper/build/
+
+# Large or external data
+data/raw/
+mine_sentinel_autonomy/
+ws_build/
+
+# Local working files
+_local/
