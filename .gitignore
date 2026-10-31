@@ -17,3 +17,6 @@ paper/paper_real_photos.*
 __pycache__/
 .venv/
 ws_build/
+paper/paper_*.pdf
+!paper/paper_final.pdf
+!paper/paper_ieee_candidate.pdf
