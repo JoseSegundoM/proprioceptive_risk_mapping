@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="Proprioceptive Risk Mapping" width="100%"/>
+<img src="assets/banner-v2.png" alt="Proprioceptive Risk Mapping" width="100%"/>
 
 <br/><br/>
 
