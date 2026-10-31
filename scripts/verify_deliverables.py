@@ -47,7 +47,7 @@ check(all("\\doilink" in b or "arxiv.org" in b for _, b in items), f"all {len(it
 all_uris = [str(o.get_object()["/A"].get("/URI", "")) for pg in pdf.pages for o in (pg.get("/Annots") or []) if "/A" in o.get_object()]
 check(sum("doi.org" in u for u in all_uris) >= len(items) - 2, "DOI links are live annotations")
 check(any("10.18687/LACCEI2026.1.1.2664" in u for u in all_uris) and any("scopus.com/pages/publications/105048843694" in u for u in all_uris), "LACCEI paper links to its DOI and to Scopus")
-for name in ("paper_final", "paper_ieee_candidate", "paper_real_photos"):
+for name in ("paper_final", "paper_ieee_candidate"):
     if (P / f"{name}.pdf").exists():
         r = subprocess.run([sys.executable, str(R / "scripts" / "fix_breaks.py"), "--check", str(P / f"{name}.pdf")], capture_output=True, text=True)
         check(r.returncode == 0, f"{name}: every column ends at a full stop or a float")

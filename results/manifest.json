@@ -49,8 +49,8 @@
  "hashes": {
   "data/processed/episodes_campaign.csv": "46c39d51d6094a883a16ffd7c66528bf7b995e8b06738b4e06fe9b0e55f820ae",
   "data/processed/episodes_pilot.csv": "33911df0c6a1cbb89602c74c7e8dc7ec1a664db58502a0ff8552822093823bb1",
-  "paper/main.tex": "84d8e055f29a25dfa5b6f4916994e0e0e1d61ca97d33eccff87ddb7022ed4097",
-  "paper/paper_final.pdf": "6690f6b56a6b0ac2f38c12bd3b10b5334aef6937e87bc93be7554597beb545d0",
+  "paper/main.tex": "43f34a923cb496f1192c5e9628fab74d1b2db4a4e186ca3d521b7ae0b0bd3e6b",
+  "paper/paper_final.pdf": "0b5af0bb9625d11caf4e87dc72db7cc4249930e6b1f24fa6d3b40ef4e584ae73",
   "paper/references.bib": "e886489062a011578b1b38f21d3021ed506fc9474b11bf130dd365d585d96d24",
   "paper/tables/values.tex": "469f0ed555f33e0f4646506d7ec9baa7042d98d370f32acad89c7946c667bf82",
   "results/classifier/classifier_metrics.csv": "1ee8d00678d7e3bbca10ca211d2b93bcff43bd684805e0d5750473934a40e359",

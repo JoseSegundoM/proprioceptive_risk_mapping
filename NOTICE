@@ -14,3 +14,6 @@ Robot models and the legged walking policy are not redistributed here. Regenerat
 signals needs them from the separate project repository mine_sentinel_autonomy, which builds on
 the Dobot Quad SDK (MIT, Dobot Robotics Co., Ltd.). The renders and recorded signals in this
 repository were produced from those models.
+
+The photographs in paper/figures/photos are not covered by the MIT License. They remain the property
+of their owners and appear here only as part of the manuscript.
