@@ -9,12 +9,12 @@ def check(ok, msg):
     print(("PASS " if ok else "FAIL ") + msg)
     if not ok:
         fail.append(msg)
-pdf = pypdf.PdfReader(B / "paper_final.pdf")
+pdf = pypdf.PdfReader(B / "paper_66.pdf")
 check(4 <= len(pdf.pages) <= 6, f"page count {len(pdf.pages)} within 4-6")
 for extra in ("paper_ieee_candidate",):
     check(4 <= len(pypdf.PdfReader(B / f"{extra}.pdf").pages) <= 6, f"{extra} within 4-6 pages")
 b = pdf.pages[0].mediabox; check(abs(float(b.width) - 595.3) < 1 and abs(float(b.height) - 841.9) < 1, "A4 page size")
-log = (B / "paper_final.log").read_text(errors="ignore")
+log = (B / "paper_66.log").read_text(errors="ignore")
 check("LaTeX Warning: Citation" not in log and "LaTeX Warning: Reference" not in log, "no unresolved citation or reference")
 check("Overfull \\hbox" not in log, "no overfull boxes")
 uris = []
@@ -34,27 +34,29 @@ for page, t in enumerate(pdf.pages):
         check(not re.fullmatch(r"\d+", words[-1].strip()), f"no page number on page {page + 1}")
 order = re.sub(r"\s+", " ", pdf.pages[0].extract_text())
 check(order.find("Segundo Manayay") < order.find("Garay Yovera") < order.find("Huiman") and " and Jose" not in order[:400] and "Yovera, and" not in order[:400], "author order Jose, Javier, Francisco, commas only")
-fill = subprocess.run([sys.executable, str(R / "scripts" / "paper" / "page_fill.py"), str(B / "paper_final.pdf")], capture_output=True, text=True).stdout
+fill = subprocess.run([sys.executable, str(R / "scripts" / "paper" / "page_fill.py"), str(B / "paper_66.pdf")], capture_output=True, text=True).stdout
 gaps = [float(g) for g in re.findall(r"(?:left|right) (-?[\d.]+) mm", fill)]
 check(max(gaps) < 14.0, f"pages full: largest gap above the bottom margin {max(gaps):.1f} mm")
 tops = [float(t) for t in re.findall(r"top ([\d.]+) mm", fill)]
 check(min(tops) >= 36.0, f"EPIC top margin respected: first ink at {min(tops):.1f} mm")
 last = pdf.pages[-1]
 check(not list(last.images), "no images on the last page")
-bbl = (B / "paper_final.bbl").read_text()
+bbl = (B / "paper_66.bbl").read_text()
 items = re.findall(r"\\bibitem\{(\w+)\}(.*?)(?=\\bibitem|\\end\{thebibliography\})", bbl, re.S)
 check(all("\\doilink" in b or "arxiv.org" in b for _, b in items), f"all {len(items)} references show a DOI or arXiv link")
 all_uris = [str(o.get_object()["/A"].get("/URI", "")) for pg in pdf.pages for o in (pg.get("/Annots") or []) if "/A" in o.get_object()]
 check(sum("doi.org" in u for u in all_uris) >= len(items) - 2, "DOI links are live annotations")
 check(any("10.18687/LACCEI2026.1.1.2664" in u for u in all_uris) and any("scopus.com/pages/publications/105048843694" in u for u in all_uris), "LACCEI paper links to its DOI and to Scopus")
-for name in ("paper_final", "paper_ieee_candidate"):
+for name in ("paper_66", "paper_ieee_candidate"):
     if (B / f"{name}.pdf").exists():
         r = subprocess.run([sys.executable, str(R / "scripts" / "paper" / "fix_breaks.py"), "--check", str(B / f"{name}.pdf")], capture_output=True, text=True)
         check(r.returncode == 0, f"{name}: every column ends at a full stop or a float")
         check(len(pypdf.PdfReader(B / f"{name}.pdf").pages) == 6, f"{name}: 6 pages")
-same = subprocess.run(["pdftotext", str(B / "paper_final.pdf"), "-"], capture_output=True).stdout == subprocess.run(["pdftotext", str(P / "paper_final.pdf"), "-"], capture_output=True).stdout
-check(same, "the source still builds the text of the submitted manuscript")
-tex = (P / "main.tex").read_text()
+same = subprocess.run(["pdftotext", str(B / "paper_66.pdf"), "-"], capture_output=True).stdout == subprocess.run(["pdftotext", str(P / "paper_66.pdf"), "-"], capture_output=True).stdout
+check(same, "the published editorial PDF matches the current build")
+tex = (P / "paper_66.tex").read_text()
+accepted = (P / "versions" / "accepted_source.tex").read_text()
+check(tex[tex.index(r"\begin{abstract}"):] == accepted[accepted.index(r"\begin{abstract}"):], "scientific body unchanged from historical source")
 ab = tex[tex.index(r"\begin{abstract}") + 16:tex.index(r"\end{abstract}")]
 check(len(ab.split()) <= 200, f"abstract {len(ab.split())} words (<=200, limit from the project summary, not confirmed on the site)")
 v = dict(re.findall(r"\\newcommand\{\\v(\w+)\}\{(.*)\}", (P / "tables" / "values.tex").read_text()))

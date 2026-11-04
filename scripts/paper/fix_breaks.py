@@ -5,14 +5,14 @@ import re, subprocess, sys, tempfile, unicodedata
 from pathlib import Path
 import pypdf
 R = Path(__file__).resolve().parents[2]; P = R / "paper"; MM = 25.4 / 72
-PDF = str(P / "build" / "paper_final.pdf")
+PDF = str(P / "build" / "paper_66.pdf")
 ABBR = {"fig.", "figs.", "eq.", "vol.", "no.", "pp.", "al.", "e.g.", "i.e."}
 
 
 def compile_():
     import os
     env = dict(os.environ, PATH="/usr/bin:" + os.environ["PATH"], TEXINPUTS=f"{P / 'template'}:", BSTINPUTS=f"{P / 'template'}:")
-    subprocess.run(["latexmk", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-outdir=build", "-jobname=paper_final", r"-usepretex=\def\PDFPROFILE{interactive}", "main.tex"], cwd=P, env=env, check=True, capture_output=True)
+    subprocess.run(["latexmk", "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-outdir=build", "-jobname=paper_66", r"-usepretex=\def\PDFPROFILE{interactive}", "paper_66.tex"], cwd=P, env=env, check=True, capture_output=True)
 
 
 def columns(pdf):
@@ -86,14 +86,14 @@ def insert_break(sel, tex):
 
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if a != "--check"]
-    pdf = args[0] if args else str(P / "build" / "paper_final.pdf")
+    pdf = args[0] if args else str(P / "build" / "paper_66.pdf")
     PDF = pdf
     if "--check" in sys.argv:
         cols = columns(pdf)
         for p, side, sel in cols:
             print(f"p{p}{side}: ...{' '.join(v[4] for v in sel[-4:])}  {'OK' if closes(sel) else 'MID-SENTENCE'}")
         sys.exit(1 if status(cols) else 0)
-    tex_path = P / "main.tex"
+    tex_path = P / "paper_66.tex"
     for it in range(40):
         compile_()
         BODY = None

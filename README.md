@@ -4,9 +4,9 @@
 
 <br/><br/>
 
-**Proprioception-Augmented Risk Mapping for a Commercial Quadruped:<br/>Terrain-Aware Navigation Across Legged and Wheeled Configurations**
+**Proprioception-Augmented Risk Mapping for Terrain-Aware Navigation Across Legged and Wheeled Quadruped Configurations**
 
-<sub>José Luis Segundo Manayay · Javier Yanpier Garay Yovera · Francisco Jesús Rodríguez Huiman</sub><br/>
+<sub>Jose Luis Segundo Manayay · Javier Yanpier Garay Yovera · Francisco Jesús Rodríguez Huiman</sub><br/>
 <sub>Faculty of Mechanical Engineering · Universidad Nacional de Ingeniería (UNI) · Lima, Peru</sub>
 
 <br/>
@@ -90,8 +90,8 @@ Mission survival `P_s`, 200 evaluation maps, classifier error ε = 0.1, assumed 
 Ubuntu 24.04, Python 3.12, and a LaTeX distribution for the manuscript.
 
 ```bash
-git clone https://github.com/JoseSegundoM/proprioceptive_risk_mapping.git
-cd proprioceptive_risk_mapping
+git clone https://github.com/JoseSegundoM/proprioceptive_risk_mapping.git paper_66
+cd paper_66
 make setup      # virtual environment and dependencies
 make test       # physics tests skip without the robot models
 make analysis   # statistics and tables from the recorded missions
@@ -125,8 +125,9 @@ episodes plotted in the paper, and `results/manifest.json` records versions, see
   `src/physics/capture.py`, because at 200 Hz the stance PD produced a numerical limit cycle of about
   70 m/s² RMS at the IMU.
 
-`paper/paper_final.pdf` is the submitted manuscript and builds never overwrite it; `make verify` checks that the
-source still produces its text.
+`paper/paper_final.pdf` is the submitted manuscript and builds never overwrite it; the original source is preserved in `paper/versions/accepted_source.tex`.
+The current editorial revision is `paper/paper_66.tex` and `paper/paper_66.pdf`;
+`make verify` checks its build and that the scientific body remains unchanged.
 
 ---
 
@@ -163,7 +164,7 @@ Contributions should say what was run, keep every run, including failed ones, an
 │   └── examples/            raw episodes plotted in the paper
 ├── paper/
 │   ├── paper_final.pdf      submitted manuscript
-│   ├── main.tex, references.bib
+│   ├── paper_66.tex, references.bib
 │   ├── figures/             PDF for the paper, plus png/, svg/, diagrams/, renders/, photos/
 │   ├── tables/              generated tables and values
 │   └── template/            IEEE class and style
@@ -189,7 +190,7 @@ Contributions should say what was run, keep every run, including failed ones, an
 
 | Author | E-mail | ORCID | GitHub |
 | --- | --- | --- | --- |
-| José Luis Segundo Manayay | [jose.segundo.m@uni.pe](mailto:jose.segundo.m@uni.pe) | [0009-0002-9203-8710](https://orcid.org/0009-0002-9203-8710) | [@JoseSegundoM](https://github.com/JoseSegundoM) |
+| Jose Luis Segundo Manayay | [jose.segundo.m@uni.pe](mailto:jose.segundo.m@uni.pe) | [0009-0002-9203-8710](https://orcid.org/0009-0002-9203-8710) | [@JoseSegundoM](https://github.com/JoseSegundoM) |
 | Javier Yanpier Garay Yovera | [javier.garay.y@uni.pe](mailto:javier.garay.y@uni.pe) | [0009-0001-1645-8724](https://orcid.org/0009-0001-1645-8724) | [@garx17](https://github.com/garx17) |
 | Francisco Jesús Rodríguez Huiman | [francisco.rodriguez.h@uni.pe](mailto:francisco.rodriguez.h@uni.pe) | [0009-0006-6972-2484](https://orcid.org/0009-0006-6972-2484) | [@frodriguezhuiman-lgtm](https://github.com/frodriguezhuiman-lgtm) |
 
@@ -203,4 +204,5 @@ MIT, see [`LICENSE`](LICENSE). Third-party components and the photographs, which
 
 ## 📚 Citation
 
-See [`CITATION.cff`](CITATION.cff). The manuscript is in [`paper/paper_final.pdf`](paper/paper_final.pdf).
+See [`CITATION.cff`](CITATION.cff). The editorial manuscript is in [`paper/paper_66.pdf`](paper/paper_66.pdf).
+See [version history](docs/manuscript_versions.md) for its status and the accepted title.

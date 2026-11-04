@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: If you use this software or its results, please cite it as below.
 type: software
-title: "Proprioceptive Risk Mapping: terrain-aware navigation across legged and wheeled configurations"
+title: "Proprioception-Augmented Risk Mapping for Terrain-Aware Navigation Across Legged and Wheeled Quadruped Configurations"
 version: 0.1.0
 date-released: "2026-10-30"
 authors:

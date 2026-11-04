@@ -15,3 +15,14 @@ ws_build/
 
 # Local working files
 _local/
+
+# Private archives and configuration
+/.local/
+/.env
+/.env.*
+!/.env.example
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
