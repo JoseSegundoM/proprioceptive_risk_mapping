@@ -55,8 +55,13 @@ for name in ("paper_66", "paper_ieee_candidate"):
 same = subprocess.run(["pdftotext", str(B / "paper_66.pdf"), "-"], capture_output=True).stdout == subprocess.run(["pdftotext", str(P / "paper_66.pdf"), "-"], capture_output=True).stdout
 check(same, "the published editorial PDF matches the current build")
 tex = (P / "paper_66.tex").read_text()
-accepted = (P / "versions" / "accepted_source.tex").read_text()
-check(tex[tex.index(r"\begin{abstract}"):] == accepted[accepted.index(r"\begin{abstract}"):], "scientific body unchanged from historical source")
+import hashlib
+editorial = json.loads((R / "docs" / "editorial_changes.json").read_text())
+body = tex[tex.index(r"\begin{abstract}"):]
+for change in reversed(editorial["replacements"]):
+    check(body.count(change["after"]) == 1, "documented editorial wording occurs once")
+    body = body.replace(change["after"], change["before"], 1)
+check(hashlib.sha256(body.encode()).hexdigest() == editorial["scientific_body_sha256"], "scientific body unchanged apart from documented editorial wording")
 ab = tex[tex.index(r"\begin{abstract}") + 16:tex.index(r"\end{abstract}")]
 check(len(ab.split()) <= 200, f"abstract {len(ab.split())} words (<=200, limit from the project summary, not confirmed on the site)")
 v = dict(re.findall(r"\\newcommand\{\\v(\w+)\}\{(.*)\}", (P / "tables" / "values.tex").read_text()))

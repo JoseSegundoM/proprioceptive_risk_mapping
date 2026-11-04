@@ -90,8 +90,8 @@ Mission survival `P_s`, 200 evaluation maps, classifier error ε = 0.1, assumed 
 Ubuntu 24.04, Python 3.12, and a LaTeX distribution for the manuscript.
 
 ```bash
-git clone https://github.com/JoseSegundoM/proprioceptive_risk_mapping.git paper_66
-cd paper_66
+git clone https://github.com/JoseSegundoM/proprioceptive_risk_mapping.git
+cd proprioceptive_risk_mapping
 make setup      # virtual environment and dependencies
 make test       # physics tests skip without the robot models
 make analysis   # statistics and tables from the recorded missions
@@ -125,7 +125,7 @@ episodes plotted in the paper, and `results/manifest.json` records versions, see
   `src/physics/capture.py`, because at 200 Hz the stance PD produced a numerical limit cycle of about
   70 m/s² RMS at the IMU.
 
-`paper/paper_final.pdf` is the submitted manuscript and builds never overwrite it; the original source is preserved in `paper/versions/accepted_source.tex`.
+Historical manuscripts are preserved locally in `.local/previous_versions/` and in Git history at `21a70e1`.
 The current editorial revision is `paper/paper_66.tex` and `paper/paper_66.pdf`;
 `make verify` checks its build and that the scientific body remains unchanged.
 
@@ -163,7 +163,7 @@ Contributions should say what was run, keep every run, including failed ones, an
 │   ├── features/            classifier window features
 │   └── examples/            raw episodes plotted in the paper
 ├── paper/
-│   ├── paper_final.pdf      submitted manuscript
+│   ├── paper_66.pdf         current editorial manuscript
 │   ├── paper_66.tex, references.bib
 │   ├── figures/             PDF for the paper, plus png/, svg/, diagrams/, renders/, photos/
 │   ├── tables/              generated tables and values
